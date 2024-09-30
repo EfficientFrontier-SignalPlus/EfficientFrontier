@@ -131,11 +131,11 @@ Please note, this API will only be made available to validators and not all user
 - Capital markets are exceptionally efficient creatures and trading evaluation and prediction are only as good as the scope and quality of the incoming data.
 - Current CEX venues still have many orders of magnitudes above DEX venues, and will likely continue to stay this way in the foreseeable future given the 1) liquidity breadth & depth, 2) execution slippage, 3) product complexity and availability, 4) number of participants, and 5) readily availability of advanced spread and 'portfolio-based' trading strategies and 6) trading data authenticity that are simply much superior in the CEX venues.
 - As such, in order to ensure that we have the best available data quality, authenticity (minimize wash trades), and trading signals, we needed to make this full anonymity compromise where users will need to have a CEX account in order to participate.
-![](blob:https://ainxbawxjd.larksuite.com/76f23270-6f37-4ab2-a785-83d8837ac70c)
+![](./pics/DexCexSpotVolumeRatio.jpeg)
 
 ### Will users have access to any trading signals from the results output?
 - Yes, SignalPlus will be able to provide users with an API for receiving trading signals post production release.
-How will we ensure the sanctity and authenticity of input data?
+### How will we ensure the sanctity and authenticity of input data?
 - SignalPlus is a leading institutional platform that's recognized by the industry's largest exchanges as the go-to 3rd party benchmark platform for crypto derivatives trading, especially for crypto options.
 - All data that will be used for ranking purposes come from real, factual trades that take place on CEX with actual monetary exchanges.  Outside of our own platform validation, these are trades that have been recognized and recorded on exchanges' own platforms.
 - All transactions are recorded in chronological order in real-time, with PNL results calculated at the end of the mark as per any professional trading outfit.
