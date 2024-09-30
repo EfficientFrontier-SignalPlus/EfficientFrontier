@@ -7,7 +7,7 @@
 ## Introduction
 > Efficient Frontier: a set of optimal portfolios that offer the highest expected return for a defined level of risk, or the lowest risk for a given level of expected return.
 
-Efficient Frontier is a project initiated by SignalPlus and Bittensor, designed to identify the optimal risk-weighted trading strategies through the integration of decentralized machine learning networks and live trading data. This project will allow SignalPlus platform users to participate in Bittensor's mining program, while earning the chance for TAO airdrop rewards based on trading performance rankings.
+Efficient Frontier is a project initiated by SignalPlus and Bittensor, designed to identify the optimal risk-weighted trading strategies through the integration of decentralized machine learning networks and live trading data. This project will leverage Bittensor's innovative blockchain-powered AI learning protocol to advance our journey in discovering optimal crypto trading strategies. Furthermore, through the use of SignalPlus' market-leading platform, every day users will now be equipped with a professional trading toolkit that is available right on their desktop, enabling true democratised access and empowering the open-access initiative.
 
 ### What is Bittensor?
 Bittensor is a decentralized protocol specifically designed for machine learning (ML) and artificial intelligence (AI). It offers a unique marketplace for both users and providers of ML algorithms, utilizing a decentralized network to facilitate the exchange of these resources. More than just a marketplace for ML models, Bittensor provides a platform for training these models in a censorship-resistant environment, challenging the resource-intensive monopolies of tech giants.
@@ -96,21 +96,51 @@ Without such a platform, it would be impossible to securely validate trades or t
 - You can find detailed instructions on how to become a miner via the following link: <p> [how-to-join-the-greatest-tournament-of-crypto](./HowToJoin.md)
 
 
-### Validation Installation
+### Validator Installation
 - The validator locally synchronizes the latest blockchain and retrieves all metadata uploaded by the corresponding miners.
 - Initially, it verifies the authenticity of the data using asymmetric encryption.
 - Once validated, the validator applies a Ranking Model to calculate the miner's weight and updates the results on the blockchain. This will determine the amount of airdrops the miner can receive in the next cycle.
 - During this process, risk control checks are conducted, and if any fraudulent activity is detected, penalties may be imposed, including disqualification from the competition.
 
+### Real Time Transaction API
+SignalPlus will provide a special API which will allow validators to obtain real-time transaction data for each miner.  This will allow the necessary validators to:
+1. Verify the validity of all transactions in real time;
+2. Monitor the miners' trading activities
+3. Design certain products and services based on observed trading signals
+Please note, this API will only be made available to validators and not all users to encourage more active network participation.
+
 
 ## FAQ
+
+### When is the Target Launch Date?
+- Mid to Late October 2024.
+
 ### What are the expected operations for a miner?
 - You need to operate with a certain capital base, be actively trading, with a goal of maximizing your return against the lowest possible drawdowns via the [t.signalplus.com](https://t.signalplus.com) platform.
 - Your scores will be judged based on a 'drawdown-adjusted' return (as defined above), with airdrop rewards based on your daily rankings.
 
 ### Do I need a GPU to run a miner or validator?
 - No, you don't.
+  
+### Does SignalPlus require KYC?
+- KYC is not required for our new SignalPlus users as our platform does not touch customer assets at any point of the workflow; however, the platform requires a CEX account API to work as most derivative trading liquidity is still aggregated on CEX.
+  
+### What CEXs does SignalPlus support?
+- Binace, Bybit, Deribit, OKX, and Paradigm (for OTC trading).
+### Why did we make the decision to support CEX venues over pure DEX protocols?
+- Capital markets are exceptionally efficient creatures and trading evaluation and prediction are only as good as the scope and quality of the incoming data.
+- Current CEX venues still have many orders of magnitudes above DEX venues, and will likely continue to stay this way in the foreseeable future given the 1) liquidity breadth & depth, 2) execution slippage, 3) product complexity and availability, 4) number of participants, and 5) readily availability of advanced spread and 'portfolio-based' trading strategies and 6) trading data authenticity that are simply much superior in the CEX venues.
+- As such, in order to ensure that we have the best available data quality, authenticity (minimize wash trades), and trading signals, we needed to make this full anonymity compromise where users will need to have a CEX account in order to participate.
+![](blob:https://ainxbawxjd.larksuite.com/76f23270-6f37-4ab2-a785-83d8837ac70c)
 
+### Will users have access to any trading signals from the results output?
+- Yes, SignalPlus will be able to provide users with an API for receiving trading signals post production release.
+How will we ensure the sanctity and authenticity of input data?
+- SignalPlus is a leading institutional platform that's recognized by the industry's largest exchanges as the go-to 3rd party benchmark platform for crypto derivatives trading, especially for crypto options.
+- All data that will be used for ranking purposes come from real, factual trades that take place on CEX with actual monetary exchanges.  Outside of our own platform validation, these are trades that have been recognized and recorded on exchanges' own platforms.
+- All transactions are recorded in chronological order in real-time, with PNL results calculated at the end of the mark as per any professional trading outfit.
+- Finally, we have built-in further 'sanity checks' to ensure that even the exchange trades are 'commercially-authentic' versus the current market levels and current traded prices.
+  
 ### Are there any additional rules we need to comply with for ranking considerations?
 - Yes, please see an outline below for the current requirements. Additional modifications might be added overtime based on user feedback and project iterations.
 - Users must comply with all of the following rules in order for their scores to be counted for daily airdrop rankings.
@@ -121,8 +151,7 @@ Without such a platform, it would be impossible to securely validate trades or t
 |--|--|--|
 |Minimum Maintenance Wallet Size|[USDT 10,000]|Rankings are based on normalized % balances to equalize different sizes, and a minimum threshold is applied in order to filter out excessively large % gains from marginal wallets.|
 |24 Hour Period|[4pm HKT] cycles|For daily ranking measurements.|
-|Minimum Daily Trading Volumes|Daily traded premium (or initial margin) must be >5% of the starting equity balance on the day.|Simulate Value-at-Risk requirement<p><p>Force users to trade at least some portion of their starting balance daily<p><p>Prevents users with a lucky big win early on to sit on their balance and not trade, but still ranking very high for the daily airdrops|
-|Minimum Trading Volume Breaches|Users must have maintained the minimum trading quota for at least [8] out of the last 10 calendar days|Give users a small break if needed<p><p>Users with a big historical gains will see their daily ranking index get pulled down by the formula<p><p>Users who don't meet the threshold will have to restart trading until they meet the [8] out of 10 days record before their records can be recognized again|
+|Minimum Daily Trading Volumes|(Daily Option Premium Traded + Daily Initial Margin Traded in Futures) > USDT 1,000|Requirement for users to remain 'active' in daily trading to stay in-scope for airdrop rankings.|
 |Withdrawal Limits|Net cashflow into the account must be positive (>0) each day in order for the day's return to quality for ranking calculations.  Ie. There cannot be net cash withdrawals.|Prevent users from getting a lucky big win early then cashing out, while leaving a small balance to keep airdrop farming.<p><p>Users are allowed to withdraw anytime, as long as they acknowledge that their results will not be counted.|
 |Execution Through SignalPlus Platform|All order executions must be executed through SignalPlus's designated platform in order to be considered for airdrop rankings.|To ensure trading data authenticity and validation of the day's trading results.|
 |Negative Daily Returns|Negative daily returns will always be included in ranking calculations.|To prevent users from trying to 'take out' their negative return days by purposely violating one of the prior parameters to inflate their negative drawdown measures.<p><p>Emphasize the importance of loss protection and risk management discipline.|
