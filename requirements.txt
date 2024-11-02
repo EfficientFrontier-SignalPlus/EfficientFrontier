@@ -1,0 +1,4 @@
+bittensor==8.1.0
+bittensor-cli==8.1.0
+bittensor-wallet==2.0.0
+loguru==0.7.2

@@ -1,0 +1,60 @@
+# The MIT License (MIT)
+# Copyright © 2023 Yuma Rao
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+# documentation files (the “Software”), to deal in the Software without restriction, including without limitation
+# the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
+# and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in all copies or substantial portions of
+# the Software.
+
+# THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+# THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+# THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+# DEALINGS IN THE SOFTWARE.
+
+import time
+import bittensor as bt
+from bittensor import logging
+
+from core.protocol import EFProtocol
+from core.validator_reward import get_rewards
+from _sdk.template.utils.uids import get_random_uids
+from loguru import logger
+
+
+async def forward(self):
+    num_uids = 100
+    batch_size = 5
+    miner_uids = get_random_uids(self, k=num_uids)
+
+    all_responses = []
+    for i in range(0, num_uids, batch_size):
+        batch_uids = miner_uids[i:i + batch_size]
+
+        # for miner_uid in batch_uids:
+        #     axon = self.metagraph.axons[miner_uid]
+        #     logger.info(f"miner_uid: {miner_uid}, {axon.ip}:{axon.port}")
+
+        responses = await self.dendrite(
+            axons=[self.metagraph.axons[uid] for uid in batch_uids],
+            synapse=EFProtocol(dummy_input={}),
+            deserialize=True,
+        )
+
+        all_responses.extend(responses)
+
+    rewards = get_rewards( query=self.step, responses=all_responses)
+    assert len(miner_uids) == len(all_responses) == len(rewards)
+
+    for idx, (uid, response, reward) in enumerate(zip(miner_uids, all_responses, rewards)):
+        try:
+            # rewards[idx] = 100.0
+            logger.info(f"uid: {uid}, coldkey:{self.metagraph.axons[uid].coldkey[:10]}, "
+                            f"response: {response}, reward: {rewards[idx]}")
+        except Exception as e:
+            logger.error(f"Error in logging: {e}")
+    self.update_scores(rewards, miner_uids)
+
