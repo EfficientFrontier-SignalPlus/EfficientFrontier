@@ -6,7 +6,7 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives import serialization
 from cryptography.exceptions import InvalidSignature
 
-from env_setting.env_utils import get_env_setting
+from core.env_setting.env_utils import get_env_setting
 
 
 def verify256(data: str, sign: str) -> bool:

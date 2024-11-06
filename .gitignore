@@ -159,7 +159,7 @@ testing/
 
 output.txt
 dev_tools
-env_setting/setting_dev.py
+core/env_setting/setting_dev.py
 timestamp.txt
 test.py
 message_and_signature.txt

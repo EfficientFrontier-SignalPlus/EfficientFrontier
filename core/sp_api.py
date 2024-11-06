@@ -3,7 +3,7 @@ from loguru import logger
 import requests
 from enum import Enum
 
-from env_setting.env_utils import get_env_setting
+from core.env_setting.env_utils import get_env_setting
 from core.ranking_model import ScoreModel
 from core.utils import verify256
 

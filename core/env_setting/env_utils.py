@@ -9,11 +9,11 @@ env = args.env
 
 def get_env_setting():
     if env in ['prod']:
-        from env_setting import setting_prod as env_setting
+        from core.env_setting import setting_prod as env_setting
     elif env == 'dev':
-        from env_setting import setting_dev as env_setting
+        from core.env_setting import setting_dev as env_setting
     elif env == 'test':
-        from env_setting import setting_test as env_setting
+        from core.env_setting import setting_test as env_setting
     else:
         print(f'Configuration error, please check! env={env}')
         os._exit(0)

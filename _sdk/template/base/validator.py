@@ -36,7 +36,7 @@ from _sdk.template.base.utils.weight_utils import (
 )
 from _sdk.template.utils.config import add_validator_args
 from core.utils import write_timestamp
-from env_setting.env_utils import get_env_setting
+from core.env_setting.env_utils import get_env_setting
 from loguru import logger
 
 class BaseValidatorNeuron(BaseNeuron):
