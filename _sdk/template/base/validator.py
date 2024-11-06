@@ -144,20 +144,20 @@ class BaseValidatorNeuron(BaseNeuron):
         try:
             while True:
                 try:
-                    logger.info(f"debug 1")
+                    # logger.info(f"debug 1")
                     self.loop.run_until_complete(self.concurrent_forward())
 
-                    logger.info(f"debug 2")
+                    # logger.info(f"debug 2")
                     # Check if we should exit.
                     if self.should_exit:
                         return
 
                     try:
-                        logger.info(f"debug 3")
+                        # logger.info(f"debug 3")
                         self.sync()
                     except Exception as e:
                         logger.error(f"Failed to sync with exception: {e}")
-                    logger.info(f"debug 4")
+                    # logger.info(f"debug 4")
                     self.step += 1
                 except Exception as e:
                     logger.error(f"Failed to run forward with exception: {e}")
