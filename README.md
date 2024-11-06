@@ -243,6 +243,7 @@ The project goal is to reward strategies that can produce consistently positive 
 - Once validated, the validator applies a Ranking Model to calculate the miner's weight and updates the results on the blockchain. This will determine the amount of rewards the miner can receive in the next cycle.
 - During this process, risk control checks are conducted, and if any fraudulent activity is detected, penalties may be imposed, including disqualification from the competition.
 - [running_validator_on_testnet](docs/running_on_testnet.md)
+- [running_validator_on_mainnet](docs/running_on_mainnet.md)
 
 ### Real Time Transaction API
 SignalPlus will provide a special API which will allow validators to obtain real-time transaction data for each miner.  This will allow the necessary validators to:
