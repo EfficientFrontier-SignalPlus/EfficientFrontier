@@ -215,7 +215,7 @@ The project goal is to reward strategies that can produce consistently positive 
 
 | FIELD  | DESCRIPTION  <p> [x] = Variable |RATIONALE|
 | ------------- | ------------- | ------------- |
-|  Ranking_Index |  = Exponentially Weighted Daily Returns / ABS [Min (-1%, Worst 7d Rolling Peak-to-Trough Drawdown) ]|Exponentially Weighted Daily Returns / Worst 7d Rolling drawdowns<p><p>Conceptually similar to a Calmar ratio, with some adjustments down to daily return weights in order to favour more recent performance.<p><p>A 7-day lead-in period is applied in order to begin tracking the drawdown measurement window from strategy inception. |
+|  Ranking_Index |  = Exponentially Weighted Daily Returns / ABS [Min (-1%, Worst 14d Rolling Peak-to-Trough Drawdown) ]|Exponentially Weighted Daily Returns / Worst 14d Rolling drawdowns<p><p>Conceptually similar to a Calmar ratio, with some adjustments down to daily return weights in order to favour more recent performance.<p><p>A 7-day lead-in period is applied in order to begin tracking the drawdown measurement window from strategy inception. |
 |  Exponentially Weighed Daily Returns |  Sum(Day_Weight * %_Return) / Sum (Day_Weights)  |Time weighted daily returns|
 |  Day_Weight |  = EXP ^ ( - (Measurement_Day - Daily_Returns) / (Measurement_Day) )  |Exponential day weighting|
 | Measurement_Day  |  Current Day - Inception_Day  |# of trading days elapsed since start|
@@ -226,7 +226,7 @@ The project goal is to reward strategies that can produce consistently positive 
 |Balance_DayEnd|Balance_DayStart + Net_Inflows + $_Return|Total wallet balance at end of day|
 |%_Return|$_Return / Avg(Balance_DayStart, Balance_DayStart+Net_Inflows)|Calculate daily % return adjusted (approx) by any daily Net_Inflows|
 |Index_Value|Yesterday's Index Value * (1 + %_Return)|Day 1 Value = 100 <p><p> Keeps track of normalized portfolio value growth|
-|Worst 7d Rolling Peak-to-Trough Drawdown|= MIN ( LOOKUP(MIN (Index_Value) / Max (Index_Value)), -1%)|Look for the worst peak-to-trough in capital drawdown over a 7d rolling period in % terms.<p><p>If user has 7d of consecutive gains, assign a floor value of -1% to avoid #DIV/0 error.|
+|Worst 14d Rolling Peak-to-Trough Drawdown|= MIN ( LOOKUP(MIN (Index_Value) / Max (Index_Value)), -1%)|Look for the worst peak-to-trough in capital drawdown over a 7d rolling period in % terms.<p><p>If user has 7d of consecutive gains, assign a floor value of -1% to avoid #DIV/0 error.|
 
 ## How to Use Efficient Frontier
 
