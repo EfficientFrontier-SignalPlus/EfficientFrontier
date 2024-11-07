@@ -26,13 +26,17 @@ class SPApi:
         response = requests.post(url, json=body)
         if response.status_code == 200:
             data = response.json()
+            logger.info(f'data: {data}')
             if data['code'] != 0:
                 raise Exception(f"Request failed, {Endpoint.GET_REPORT_DATA}, error message: {data['message']}")
+            logger.info(f'debug 1')
             r = verify256(data['value']['rawData'], data['value']['signature'])
+            logger.info(f'debug 2')
             if not r:
                 raise Exception('signature verify failed')
             data_str = data.get('value').get('rawData')
             data_json = json.loads(data_str)
+            logger.info(f'debug 3')
             return data_json
         else:
             response.raise_for_status()
