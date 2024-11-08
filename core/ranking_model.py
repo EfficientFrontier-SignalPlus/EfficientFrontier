@@ -123,7 +123,7 @@ class ScoreModel(BaseModel):
         if self.is_sub_net_init():
             if (self.measure_day_detail is None or self.measure_day_detail.equityStart < self.minBalance or
                     self.measure_day_detail.equityEnd < self.minBalance):
-                return 0.0
+                return 0.01
             else:
                 return 1.0
         elif self.measure_day_detail is None or not self.inTopRank:
