@@ -1,3 +1,4 @@
+websockets==13.1
 bittensor==8.1.0
 bittensor-cli==8.1.0
 bittensor-wallet==2.0.0
