@@ -47,3 +47,8 @@ def read_timestamp():
 def remove_timestamp_file():
     if os.path.exists(timestamp_file):
         os.remove(timestamp_file)
+
+
+if __name__ == '__main__':
+    r = verify256('test', 'test')
+    print(r)

@@ -298,7 +298,7 @@ class BaseValidatorNeuron(BaseNeuron):
                 print(f"updated timestamp to {time.time()}")
                 logger.info(f"set_weights on chain successfully! msg: {msg}")
             else:
-                logger.error(f"set_weights failed {msg}")
+                logger.error(f"set_weights on chain failed {msg}")
         except Exception as e:
             logger.error(f"set_weights failed with exception: {e}")
 

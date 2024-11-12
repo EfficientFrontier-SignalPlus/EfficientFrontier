@@ -1,4 +1,5 @@
 import json
+import random
 from loguru import logger
 import requests
 from enum import Enum
@@ -23,10 +24,11 @@ class SPApi:
     def get_report_data(self) -> dict:
         url = self.domain + Endpoint.GET_REPORT_DATA.value[1]
         body = {"strategySecret": self.strategy_secret, "validatorVersion": self.validator_version}
-        response = requests.post(url, json=body)
+        headers = {"Trace-Id": str(random.randint(100000, 999999))}
+        response = requests.post(url, json=body, headers=headers)
         if response.status_code == 200:
             data = response.json()
-            logger.info(f'data: {data}')
+            logger.info(f'headers: {headers}, data: {data}')
             if data['code'] != 0:
                 raise Exception(f"Request failed, {Endpoint.GET_REPORT_DATA}, error message: {data['message']}")
             r = verify256(data['value']['rawData'], data['value']['signature'])
