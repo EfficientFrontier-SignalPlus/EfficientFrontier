@@ -38,9 +38,11 @@ class SPApi:
             data_json = json.loads(data_str)
             return data_json
         else:
-            response.raise_for_status()
             logger.debug(
                 f'{self.strategy_secret[:8]}***{self.strategy_secret[-8:]} get report data failed, status code: {response.status_code}')
+            response.raise_for_status()
+
+            return {}
 
 
 class ReportDataHandler:
