@@ -93,8 +93,11 @@ class ScoreModel(BaseModel):
         self.score = self.calculate_score()
 
     def draw_down(self, d: int) -> float:
-        index_value_list = [it.indexValueEnd for it in self.sorted_list if self.measureTime - it.endTime < d * 24 * 60 * 60 * 1000]
-
+        record_list = [it for it in self.sorted_list if self.measureTime - it.endTime < d * 24 * 60 * 60 * 1000]
+        if not record_list:
+            return 0.0
+        first_record_index_value_start = record_list[0].indexValueStart
+        index_value_list = [first_record_index_value_start] + [item.indexValueEnd for item in record_list]
         results = []
         for index, max_value in enumerate(index_value_list):
             min_value = min(index_value_list[index:])
