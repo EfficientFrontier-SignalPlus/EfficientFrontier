@@ -18,15 +18,10 @@
 
 
 import time
-
-# Bittensor
-import bittensor as bt
-
-# import base validator class which takes care of most of the boilerplate
 from _sdk.template.base.validator import BaseValidatorNeuron
-# Bittensor Validator Template:
 from core.validator_forward import forward as _forward
 from loguru import logger
+
 
 class Validator(BaseValidatorNeuron):
     """
@@ -63,4 +58,4 @@ if __name__ == "__main__":
     with Validator() as validator:
         while True:
             logger.info(f"Validator running... {time.time()}")
-            time.sleep(60*10)
+            time.sleep(60 * 10)

@@ -25,10 +25,10 @@ from _sdk.template.utils.uids import get_random_uids
 from loguru import logger
 
 
-async def forward(self):
+async def forward(validator):
     num_uids = 100
     batch_size = 5
-    miner_uids = get_random_uids(self, k=num_uids)
+    miner_uids = get_random_uids(validator, k=num_uids)
 
     all_responses = []
     for i in range(0, num_uids, batch_size):
@@ -38,23 +38,23 @@ async def forward(self):
         #     axon = self.metagraph.axons[miner_uid]
         #     logger.info(f"miner_uid: {miner_uid}, {axon.ip}:{axon.port}")
 
-        responses = await self.dendrite(
-            axons=[self.metagraph.axons[uid] for uid in batch_uids],
-            synapse=EFProtocol(dummy_input={}),
+        responses = await validator.dendrite(
+            axons=[validator.metagraph.axons[uid] for uid in batch_uids],
+            synapse=EFProtocol(input={'validator_uid': validator.uid}),
             deserialize=True,
         )
 
         all_responses.extend(responses)
 
-    rewards = get_rewards( query=self.step, responses=all_responses)
+    rewards = get_rewards(query=validator.step, responses=all_responses)
     assert len(miner_uids) == len(all_responses) == len(rewards)
 
     for idx, (uid, response, reward) in enumerate(zip(miner_uids, all_responses, rewards)):
         try:
             # rewards[idx] = 100.0
-            logger.info(f"uid: {uid}, coldkey:{self.metagraph.axons[uid].coldkey[:10]}, "
+            logger.info(f"uid: {uid}, coldkey:{validator.metagraph.axons[uid].coldkey[:10]}, "
                             f"response: {response}, reward: {rewards[idx]}")
         except Exception as e:
             logger.error(f"Error in logging: {e}")
-    self.update_scores(rewards, miner_uids)
+    validator.update_scores(rewards, miner_uids)
 
