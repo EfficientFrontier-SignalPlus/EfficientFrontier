@@ -1,13 +1,16 @@
 
 # Running Subnet on Mainnet
 
-This tutorial explains how to become a validator on the mainnet.
+### Please note, this is very important: currently, direct execution of the miner program is $\color{red}{\textsf{Not}}$ supported.
+### Please $\color{red}{\textsf{Do Not}}$ spend TAO to register as a miner at this time. Refer to [HowToJoin](Introduction/HowToJoin.md) to become our miner.
+---
+
+## This tutorial explains how to become a validator on the mainnet.
 
 **DANGER**
 - Do not expose your private keys.
 - Only use your mainnet wallet.
 - Do not reuse the password of your mainnet wallet.
-- Make sure your incentive mechanism is resistant to abuse. 
 
 ## 1. Prerequisites
 

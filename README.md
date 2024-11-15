@@ -231,6 +231,8 @@ The project goal is to reward strategies that can produce consistently positive 
 ## How to Use Efficient Frontier
 
 ### Miners Installation
+- Please note, this is very important: currently, direct execution of the miner program is $\color{red}{\textsf{Not}}$ supported.
+- Please $\color{red}{\textsf{Do Not}}$ spend TAO to register as a miner at this time.
 - The miner will call the official public API to retrieve account-related metadata such as balance, equity, PnL, and drawdown, which are generated from the user's trading activities on the platform [t.signalplus.com](https://t.signalplus.com).
 - This data is then passed to the validator for evaluating the strategy's performance.
 - During transmission, asymmetric encryption is used to ensure the data remains untampered with, guaranteeing fairness and integrity.

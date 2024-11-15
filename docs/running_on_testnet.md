@@ -7,7 +7,6 @@ This tutorial explains how to become a validator on the testnet.
 - Do not expose your private keys.
 - Only use your testnet wallet.
 - Do not reuse the password of your mainnet wallet.
-- Make sure your incentive mechanism is resistant to abuse. 
 
 ## 1. Prerequisites
 
