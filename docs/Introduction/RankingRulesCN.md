@@ -77,7 +77,7 @@
    
     期货和现货：
       - 计分交易量 = 订单数量 × 订单价格 × 币种比率
-      - 币种比率：根据加密货币类型和初始保证金率有所不同，详细比率可参考[OKX保证金率](https://www.okx.com/zh-hans/trade-market/info/spot)页面。
+      - 币种比率：根据加密货币类型和初始保证金率有所不同，详细比率可参考[OKX保证金率](https://www.okx.com/trade-market/position/swap)页面。
       
     理由：确保策略有一定活跃度，以表明策略仍在有效参与市场。
 

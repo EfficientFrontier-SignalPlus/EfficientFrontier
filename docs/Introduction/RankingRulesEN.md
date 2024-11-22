@@ -87,7 +87,7 @@ The project goal is to reward strategies that can produce consistently positive 
    
     Futures and Spot:
     - Adjusted Volume = Order Quantity × Order Price × Coin Ratio
-    - Coin Ratio: Varies by cryptocurrency and is based on the initial margin rates. For specific Coin Ratios, please refer to the [OKX Margin Rates](https://www.okx.com/trade-market/info/spot) page.
+    - Coin Ratio: Varies by cryptocurrency and is based on the initial margin rates. For specific Coin Ratios, please refer to the [OKX Margin Rates](https://www.okx.com/trade-market/position/swap) page.
   
     Rationale: to require some minimal level of participation from traders to suggest that the trading strategy is still relevant.
 
