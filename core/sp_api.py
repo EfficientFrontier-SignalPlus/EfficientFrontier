@@ -19,12 +19,11 @@ class SPApi:
     def __init__(self, strategy_secret: str):
         self.domain = get_env_setting().sp_api_domain
         self.strategy_secret = strategy_secret
-        self.validator_version = get_env_setting().validator_version
 
-    def get_report_data(self, validator_uid) -> dict:
+    def get_report_data(self, validator_uid, validator_version) -> dict:
         url = self.domain + Endpoint.GET_REPORT_DATA.value[1]
         body = {"strategySecret": self.strategy_secret,
-                "validatorVersion": self.validator_version,
+                "validatorVersion": validator_version,
                 "validatorUid": validator_uid}
         headers = {"Trace-Id": str(random.randint(100000, 999999))}
         response = requests.post(url, json=body, headers=headers)

@@ -19,6 +19,7 @@ import time
 import bittensor as bt
 from bittensor import logging
 
+from core.env_setting.env_utils import get_env_setting
 from core.protocol import EFProtocol
 from core.validator_reward import get_rewards
 from _sdk.template.utils.uids import get_random_uids
@@ -40,7 +41,8 @@ async def forward(validator):
 
         responses = await validator.dendrite(
             axons=[validator.metagraph.axons[uid] for uid in batch_uids],
-            synapse=EFProtocol(input={'validator_uid': validator.uid}),
+            synapse=EFProtocol(input={'validator_uid': validator.uid,
+                                      'validator_version': get_env_setting().validator_version}),
             deserialize=True,
         )
 
