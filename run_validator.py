@@ -29,9 +29,9 @@ if __name__ == "__main__":
             timestamp = read_timestamp()
             if timestamp is not None:
                 now = time.time()
-                elapsed = round(now - timestamp,0)
+                elapsed = round(now - timestamp, 0)
                 logger.info(f"Main process checking timestamp: {timestamp}, elapsed: {elapsed} seconds")
-                timeout_min = 30
+                timeout_min = 50
                 if elapsed > timeout_min * 60:
                     logger.info(f"Main process timestamp not updated in over {timeout_min} minutes. Restarting...")
                     p.terminate()
@@ -41,7 +41,7 @@ if __name__ == "__main__":
                     p = start_foo()
             else:
                 logger.info("Failed to read timestamp")
-            time.sleep(60)  # Check every 10 seconds
+            time.sleep(60 * 5)  # Check every 10 seconds
     except KeyboardInterrupt:
         logger.info("Exiting...")
         p.terminate()
