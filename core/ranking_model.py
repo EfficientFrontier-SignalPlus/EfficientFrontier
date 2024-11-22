@@ -136,7 +136,7 @@ class ScoreModel(BaseModel):
                 s = 0.0
             elif self.quit:
                 s = 0.0
-            elif self.measure_day_detail.endTime - self.inceptionTime <= 14 * ONE_DAY_MS:
+            elif self.measure_day_detail.endTime - self.inceptionTime < 14 * ONE_DAY_MS:
                 s = 0.0
             elif not self.measure_day_detail.qualified:
                 s = 0.0
