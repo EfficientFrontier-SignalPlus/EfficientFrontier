@@ -140,12 +140,10 @@ class ScoreModel(BaseModel):
                 s = 0.0
             elif not self.measure_day_detail.qualified:
                 s = 0.0
-            elif self.draw_down(14) == 0.0:
-                s = 0.0
             elif self.exponentially_weighed_daily_returns < 0:
                 s = 0.0
             else:
-                s = self.exponentially_weighed_daily_returns / abs(self.draw_down(14))
+                s = self.exponentially_weighed_daily_returns / abs(min(-0.01, self.draw_down(14)))
 
             if self.measure_day_detail.mmrEnd > 0.8:
                 mmr_score = s * 0.5
@@ -154,7 +152,7 @@ class ScoreModel(BaseModel):
             else:
                 mmr_score = s
 
-            index_value_component = max(1.0, self.measure_day_detail.indexValueEnd / 100_000)
+            index_value_component = max(1.0, self.measure_day_detail.equityStart / 100_000)
             return mmr_score * (1 + math.log(math.sqrt(index_value_component))) * 10
 
     def get_result(self) -> ScoreResult:
