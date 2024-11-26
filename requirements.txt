@@ -1,5 +1,6 @@
-websockets==13.1
-bittensor==8.1.0
-bittensor-cli==8.1.0
-bittensor-wallet==2.0.0
+websockets==14.1
+bittensor==8.3.1
+bittensor-cli==8.3.1
+bittensor-wallet==2.1.1
+cryptography==43.0.3
 loguru==0.7.2
