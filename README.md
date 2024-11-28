@@ -186,21 +186,66 @@ The project goal is to reward strategies that can produce consistently positive 
   
     Rationale: to ensure the sanctity of the trading data as all trades must be authentic and commercially driven
 
-6. Wash or Off-Market Trading Protection
+6. Off-Market and Wash-Trading Prevention
    
     Any trades flagged as off-market or wash trades will result in a zero score for the strategy on that day, regardless of any positive performance.
-  
-    For Option instruments specifically, a simultaneous violation of both conditions will result in a penalty:
-    - BTC/ETH Options: 
-      1. MTM value of the option is >30bp of the underlying token's value AND
-      2. MTM value of the option is >30% of the mid-market mark of the premium price
-    - All Other Options: 
-      1. MTM value of the option is >50bp of the underlying token's value AND
-      2. MTM value of the option is >50% of the MID mid-market mark of the premium price
+
+    1. Rule 1
+       
+        For Option instruments specifically, a simultaneous violation of both conditions will result in a penalty:
+        - BTC/ETH Options: 
+          1. MTM value of the option is >30bp of the underlying token's value AND
+          2. MTM value of the option is >30% of the mid-market mark of the premium price
+             
+        - All Other Options: 
+          1. MTM value of the option is >50bp of the underlying token's value AND
+          2. MTM value of the option is >50% of the mid-market mark of the premium price
+          
+        Calculation formulas will vary slightly depending on the underlying margin, but violations will be triggered when:
+        - For USDT-Margin instruments
+          $$ABS(filledPrice - markPrice) > underlyingPercent$$ AND
+          $$ABS(filledPrice - markPrice) > markPrice * Percent$$
+          
+        - For Coin-Margin Instruments
+          $$ABS(filledPrice - markPrice) > underlyingPrice * underlyingPercent$$
+          AND$$ABS(filledPrice - markPrice) > markPrice * Percent$$
+
+   2. Rule 2  【Added on November 26, 2024】
+       
+        For option trades where markPrice > 50bp and filledPrice > 50bp, the following rule applies:
+        If the total MTM value of all executed trades exceeds 100 USDT on the day, the average deviation of the executed vs marked price must not exceed 10% of the total notional value.
+        
+        Violations will be triggered when:
+        - For USDT-Margin instruments
+          $$SUM(ABS(filledPrice - markPrice) * qty) > 100\:USDT$$ AND
+          
+          $$SUM(ABS(filledPrice - markPrice) * Qty) / sum(markPrice * Qty) > 10%$$
+          
+        - For Coin-Margin Instruments
+          $$SUM(ABS(filledPrice - markPrice) * qty * index) > 100\:USDT$$
+          
+          AND$$SUM(ABS(filledPrice - markPrice) * Qty)\:/\:SUM(markPrice * Qty) > 10%$$
+
+   3. Rule 3  【Added on November 28, 2024】
+       
+        For option trades where markPrice < 3bp, the following rule applies:
+       
+        If the total spread PnL of all executed trades exceeds 0.2% of the day's initial equity, it will be considered a violation.
+        
+        Calculation formulas：
+        1. Spread Calculation
+              - For a Buy order:  $$Spread = markPrice - filledPrice$$ 
+              - For a Sell order:  $$Spread = filledPrice - markPrice$$
+   
+        2. Spread Value in USDT
+              - For USDT-Margin instruments:  $$Spread = spread × qty$$ 
+              - For Coin-Margin instruments:  $$Spread = spread × indexPrice × qty$$
+            
+        3. Violation Threshold
+              - Calculate the sum of all spread values for the day. The profit spread and loss spread will offset each other, and the final total spread is obtained.
+              If $$totalSpread / equityStart > 0.002$$,  the trade violates the rule.
     
-    These rules are designed to detect and prevent any potential wash trading or price manipulation, ensuring that buy and sell orders are executed within a fair range of the market price.
-  
-    Rationale: to minimize any foul-play and ensure that all transactions are fully authentic.
+    Rationale: to detect and prevent any potential wash trading or malicious wash trading aimed at generating profits.
 
 ### 🏅 Rankings and Rewards Distribution
 - Daily Rankings: Strategies are ranked based on their daily scores from the scoring formula, with higher scores leading to better sequential rankings.
