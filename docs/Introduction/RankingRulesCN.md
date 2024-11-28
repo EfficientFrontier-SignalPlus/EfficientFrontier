@@ -104,21 +104,74 @@
     
     理由：确保所有交易数据的真实性，要求交易行为必须为真实的市场行为。
 
-6. 防止洗单与非市场交易
+6. 防止洗单与非正常市场交易
+   
+   任何被标记为非正常市场价格或洗单的交易都将导致当天得分为零，且无论其正收益如何。
 
-    任何被标记为非市场价格或洗单的交易都将导致当天得分为零，且无论其正收益如何。
-      - 买单：若成交价比标价低30%以上，且偏离标价超过3个最小变动单位，则该交易将被标记。
-      - 卖单：若成交价比标价高30%以上，且低于标价超过3个最小变动单位，则该交易将被标记。
+   a. 规则1
+   
+    当单笔交易同时满足以下两个条件时，将被判定为违反非市场价格保护规则：
+    - BTC/ETH 期权: 
+      1. 期权的MTM value超过基础资产价值的 30bp，且
+      2. 期权的MTM value超过期权市场价中间值的30%
+         
+    - All Other Options: 
+      1. 期权的MTM value超过基础资产价值的 50bp，且
+      2. 期权的MTM value超过期权市场价中间值的50%
     
-    期权产品特殊规则：若交易同时违反以下两项条件，则会受到惩罚：
-      - BTC/ETH期权：
-        1. 期权市值超过标的币种价值的30个基点
-        2. 期权市值超过权利金市场中间价的30%
-      - 其他期权：
-        1. 期权市值超过标的币种价值的50个基点
-        2. 期权市值超过权利金市场中间价的50%
+    计算公式会根据期权的保证金类型略有不同，在以下情况下会触发违规：
+    - 对于U本位期权
+      
+      $$ABS(filledPrice - markPrice) > underlyingPercent$$ AND
+      
+      $$ABS(filledPrice - markPrice) > markPrice * Percent$$
+      
+    - 对于币本位期权
+      
+      $$ABS(filledPrice - markPrice) > underlyingPrice * underlyingPercent$$ AND
+      
+      $$ABS(filledPrice - markPrice) > markPrice * Percent$$
 
-    理由：检测和防止任何潜在的虚假交易或价格操纵，确保买卖订单在市场价格的公平范围内执行，防止任何形式的价格操纵和异常交易行为。
+   b. 规则2 【规则新增于 2024年11月26日】
+   
+    对于成交价格> 50bp且成交时标记价格> 50bp的期权交易，适用以下规则：
+    如果当天所有执行交易的 MTM 总价值超过 100 USDT，则执行价格与标记价格的平均偏差不得超过总名义价值的 10%。
+    
+    出现以下情况将触发违规行为:
+    - 对于U本位期权
+      
+      $$SUM(ABS(filledPrice - markPrice) * qty) > 100\:USDT$$ AND
+      
+      $$SUM(ABS(filledPrice - markPrice) * Qty) / sum(markPrice * Qty) > 10%$$
+      
+    - 对于币本位期权
+      
+      $$SUM(ABS(filledPrice - markPrice) * qty * index) > 100\:USDT$$ AND
+      
+      $$SUM(ABS(filledPrice - markPrice) * Qty)\:/\:SUM(markPrice * Qty) > 10%$$
+      
+   c. 规则3 【规则新增于 2024年11月28日】
+   
+    对于成交时标记价格 < 3bp的期权交易，适用以下规则：
+   
+    如果当前所有执行交易的总Spread PnL超过当日初始资产的0.2%，则视作违规。
+    
+    计算逻辑：
+    1. **Spread 计算**
+       - 对于买方订单:  $$Spread = markPrice - filledPrice$$
+       - 对于卖方订单:  $$Spread = filledPrice - markPrice$$
+   
+    2. **将 Spread 转为 USDT 计算**
+       - 对于 U本位期权:  $$Spread = spread \times qty$$
+       - 对于 币本位期权:  $$Spread = spread \times indexPrice \times qty$$
+    
+    3. **违规阈值**
+       - 计算当日总的 Spread PnL。盈利部分与亏损部分会相互抵消，计算出最终总的 Spread。
+       - 如果 $$totalSpread / equityStart > 0.002$$，将视作当日违规。
+
+
+    理由：检测和防止任何潜在的虚假交易或恶意刷单赚取收益的行为。
+   
 
 ### 🏅 排名与奖励分配
 
