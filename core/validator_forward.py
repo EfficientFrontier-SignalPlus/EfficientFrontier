@@ -65,7 +65,9 @@ async def forward(validator):
             try:
                 if reward != 0:
                     reward_percentage = (reward / total_reward) * 100
-                    log_str += f"uid: {uid}, coldkey: {validator.metagraph.axons[uid].coldkey[:4]}, strategyId: {response['strategyId'][-4:]}, reward: {reward}, percentage: {reward_percentage:.2f}%\n"
+                    log_str += (f"uid: {uid}, coldkey: {validator.metagraph.axons[uid].coldkey[:4]}, "
+                                f"strategyId: {response['strategyId'][-4:]}, "
+                                f"reward: {reward:.2f}, percentage: {reward_percentage:.2f}%\n")
             except Exception as e:
                 logger.error(f"Error in logging: {e}")
     logger.info(log_str)

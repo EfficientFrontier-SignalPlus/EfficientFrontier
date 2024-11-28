@@ -41,10 +41,7 @@ def reward(query: int, response: dict) -> float:
         return None
 
 
-def get_rewards(
-        query: int,
-        responses: dict,
-) -> np.ndarray:
+def get_rewards(query: int, responses: list, ) -> np.ndarray:
     return np.array(
         [reward(query, response) for response in responses], dtype=float
     )
