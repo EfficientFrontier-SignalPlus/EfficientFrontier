@@ -372,7 +372,7 @@ class BaseValidatorNeuron(BaseNeuron):
                 self.scores[uid] = reward  # Directly update score with the latest reward
             # If reward is NaN, retain the original score (no update needed)
 
-        logger.debug(f"Updated scores: {self.scores}")
+        logger.info(f"Updated scores: {self.scores}")
 
     def save_state(self):
         """Saves the state of the validator to a file."""

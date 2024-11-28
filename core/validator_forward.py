@@ -59,11 +59,14 @@ async def forward(validator):
         except Exception as e:
             logger.error(f"Error in logging: {e}")
     log_str = '\n'
-    for idx, (uid, response, reward) in enumerate(zip(miner_uids, all_responses, rewards)):
-        try:
-            if reward != 0:
-                log_str += f"uid: {uid}, coldkey:{validator.metagraph.axons[uid].coldkey[:5]}, strategyId: {response['strategyId']}, reward: {rewards[idx]}\n"
-        except Exception as e:
-            logger.error(f"Error in logging: {e}")
+    total_reward = sum(rewards)
+    if total_reward != 0:
+        for uid, response, reward in zip(miner_uids, all_responses, rewards):
+            try:
+                if reward != 0:
+                    reward_percentage = (reward / total_reward) * 100
+                    log_str += f"uid: {uid}, coldkey: {validator.metagraph.axons[uid].coldkey[:4]}, strategyId: {response['strategyId'][-4:]}, reward: {reward}, percentage: {reward_percentage:.2f}%\n"
+            except Exception as e:
+                logger.error(f"Error in logging: {e}")
     logger.info(log_str)
     validator.update_scores(rewards, miner_uids)
