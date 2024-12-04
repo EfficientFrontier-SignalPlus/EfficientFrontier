@@ -31,6 +31,8 @@ class DayDetailDTO(BaseModel):
     indexValueStart: float
     indexValueEnd: float
     mmrEnd: float
+    decayedDrawDown: float
+    maxIndexValue: float
 
     @property
     def day_pnl(self) -> float:
@@ -42,10 +44,11 @@ class DayDetailDTO(BaseModel):
         return self.day_pnl / denominator if denominator != 0 else 0.0
 
     def day_weight(self, lambda_value: float, measure_time: int, inception_time: int) -> float:
+        decayRatio = math.log(0.2) / -14
         if not self.qualified:
             return 0.0
         measurement_day = (measure_time - inception_time) / ONE_DAY_MS
-        ex = (self.day(inception_time) - measurement_day) / measurement_day
+        ex = (measurement_day - self.day(inception_time)) * -decayRatio
         return math.exp(ex * lambda_value)
 
     def day(self, inception_time: int) -> int:
@@ -58,6 +61,7 @@ class DayDetailDTO(BaseModel):
 
 @dataclass
 class ScoreModel(BaseModel):
+    uid: int
     subNetCreateTime: int  # Must be at 16:00
     strategyId: str
     inceptionTime: int  # Must be at 16:00
@@ -143,7 +147,7 @@ class ScoreModel(BaseModel):
             elif self.exponentially_weighed_daily_returns < 0:
                 s = 0.0
             else:
-                s = self.exponentially_weighed_daily_returns / abs(min(-0.01, self.draw_down(14)))
+                s = self.exponentially_weighed_daily_returns / abs(self.measure_day_detail.decayedDrawDown)
 
             if self.measure_day_detail.mmrEnd > 0.8:
                 mmr_score = s * 0.5

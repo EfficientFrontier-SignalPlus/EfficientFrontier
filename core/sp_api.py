@@ -54,7 +54,6 @@ class ReportDataHandler:
 
 if __name__ == '__main__':
     sp_api = SPApi('4082eb5d-61f1-48aa-b563-10291648b5ff')
-    sp_api.domain = 'https://3fba-125-118-30-61.ngrok-free.app/'
-    report_data = sp_api.get_report_data()
+    report_data = sp_api.get_report_data('1','1')
     score_model = ReportDataHandler.create_score_model(report_data)
     print(score_model.score)

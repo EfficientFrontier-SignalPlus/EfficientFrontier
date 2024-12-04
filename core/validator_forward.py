@@ -48,7 +48,7 @@ async def forward(validator):
 
         all_responses.extend(responses)
 
-    rewards = get_rewards(query=validator.step, responses=all_responses)
+    rewards = get_rewards(query=validator.step, responses=all_responses, miner_uids=list(miner_uids))
     assert len(miner_uids) == len(all_responses) == len(rewards)
 
     for idx, (uid, response, reward) in enumerate(zip(miner_uids, all_responses, rewards)):

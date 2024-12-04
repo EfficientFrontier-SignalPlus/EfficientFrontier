@@ -21,7 +21,7 @@ from loguru import logger
 from core.sp_api import ReportDataHandler
 
 
-def reward(query: int, response: dict) -> float:
+def reward(query: int, response: dict, miner_uid: int) -> float:
     """
     Reward the miner response to the dummy request. This method returns a reward
     value for the miner, which is used to update the miner's score.
@@ -34,14 +34,14 @@ def reward(query: int, response: dict) -> float:
             return 0
         score_model = ReportDataHandler.create_score_model(response)
         score = score_model.score
-        logger.info(f"In reward, score: {score}, query val: {query}, miner's data': {response}")
+        logger.info(f"In reward, miner_uid:{miner_uid}, score: {score}, query val: {query}, miner's data': {response}")
         return score
     except Exception as e:
         logger.error(f"Error in rewards: {e}, miner data: {response}")
         return None
 
 
-def get_rewards(query: int, responses: list, ) -> np.ndarray:
+def get_rewards(query: int, responses: list, miner_uids: list) -> np.ndarray:
     return np.array(
-        [reward(query, response) for response in responses], dtype=float
+        [reward(query, response, miner_uid) for response, miner_uid in zip(responses, miner_uids)], dtype=float
     )
