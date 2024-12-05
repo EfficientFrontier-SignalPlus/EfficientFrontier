@@ -182,3 +182,24 @@ The project goal is to reward strategies that can produce consistently positive 
   - The formula for calculating rewards is:
     
         Strategy Reward = (Strategy's Daily Score / Total Daily Score of the Top-50 Strategies) * Total Daily Reward Pool of the Day
+
+### Ranking Model Parameters
+
+| FIELD  | DESCRIPTION  <p> [x] = Variable |RATIONALE|
+| ------------- | ------------- | ------------- |
+|  Ranking_Index <p> (Strategy Score)|  $$\frac {\text{Weighted Daily \\% Returns}}{\text{Maximum Decayed Drawdown}} \cdot 10$$|**Weighted Daily Returns / Maximum Drawdown Applied Against a Decay Factor**<p>Conceptually similar to a Calmar ratio, with some adjustments down to daily return weights in order to favour more recent performance.|
+|  Weighed Daily Returns |  $$\frac{\text{CrossProduct(DayWeights * Daily \\% Returns)}}{\text{Sum(DayWeights)}}$$  |Time weighted daily returns|
+|DayWeight|$$\exp(-\lambda \cdot \text{Return Decay} \cdot \text {(Measurement Date - Inception Date}))$$|Day-weighting against a 14d / 20% half-life|
+|Trading Frequency (λ)|$$\text{\\{2,1,0\\}}$$<p>(Note: TBD, not yet implemented in current version)|Adjusts pace of return decay to trader frequency.<p>Faster decay = more weight on more recent performance|
+|Return Decay|$$\exp(\frac{\ln(20\\%)}{\text{14 Days}})$$|14-day half-life exponential decay to 20% on historical returns|
+|Daily % Returns|$$\frac {\text{Daily \\$ Return}}{\text{Avg(Balance\\_DayStart, Balance\\_DayStart + Net\\_Inflows)}}$$|Calculate daily % return adjusted (approx) by any daily Net_Inflows|
+|Maximum Decayed Drawdown|$$\text{Min(Today's \\% Drawdown, (}\frac{\text{Trough Index Value}}{\text{Peak Index Value}}-1) \cdot \text{Drawdown Decay, -1\\%)}$$|Iteratively search for the worst peak-to-trough in % decayed drawdown on a life-to-date basis, with a floor value of -1%|
+|Drawdown Decay|$$\exp(\frac{\ln(80\\%)}{\text{14 Days}})$$|14-day half-life exponential decay to 80% on LTD peak-to-trough % drawdowns|
+|Index Value|$$\text{Yesterday's Index Value} \cdot \text{(1 + Daily \\% Return)}$$|Day 1 Value = 100<p>Keeps track of normalized portfolio value growth|
+|Measurement_Day|Current day|Current day|
+|Inception_Date|1st day for users to enter contest|Starts tracking|
+|Balance_DayStart|Wallet balance at start of day|Starting principal|
+|Net_Inflows|Net change in inflows on the wallet|To account for any inflows during the day|
+|Daily $ Return|PNL made during the day (in USDT)|Actual PNL made|
+|Balance_DayEnd| $$\text{Balance\\_DayStart + Net\\_Inflows + Daily \\$ Return}$$ | Total wallet balance at end of day|
+|LTD|$$\le90\text{ days}$$|Life to date records of the strategy.  Currently capped at 90 days.|
