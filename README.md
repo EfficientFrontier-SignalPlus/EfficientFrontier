@@ -71,7 +71,7 @@ In a nutshell, the **SignalPlus platform dramatically lowers the barriers to ent
 
 Without such a platform, it would be impossible to securely validate trades or to provide the professional trading infrastructure to promote a high quality data environment. By removing unwanted technical complexities, SignalPlus allows traders to focus on what really matters — their strategy — while ensuring a robust environment with the requisite fairness and transparency that will best accentuate the power of the Bittensor network as we unlock a new chapter in network-learning models.
 
-### [RankingModel](docs/introduction/RankingModelEN.md)
+### [3.RankingModel](docs/introduction/RankingModelEN.md)
 
 ## How to Use Efficient Frontier
 
@@ -159,11 +159,6 @@ By handling the TAO acquisition and payment process, we aim to make it as easy a
 |Withdrawal Limits|Net cashflow into the account must be positive (>0) each day in order for the day's return to quality for ranking calculations.  Ie. There cannot be net cash withdrawals.|Prevent users from getting a lucky big win early then cashing out, while leaving a small balance to keep rewards farming.<p><p>Users are allowed to withdraw anytime, as long as they acknowledge that their results will not be counted.|
 |Execution Through SignalPlus Platform|All order executions must be executed through SignalPlus's designated platform in order to be considered for rewards rankings.|To ensure trading data authenticity and validation of the day's trading results.|
 |Negative Daily Returns|Negative daily returns will always be included in ranking calculations.|To prevent users from trying to 'take out' their negative return days by purposely violating one of the prior parameters to inflate their negative drawdown measures.<p><p>Emphasize the importance of loss protection and risk management discipline.|
-
-### Can you provide a numerical example?
-- Please see the attached file.
-  
-  [Ranking Model Example](docs/Introduction/RankingModelExample.xlsx)
 
 ## License
 This repository is licensed under the MIT License.
