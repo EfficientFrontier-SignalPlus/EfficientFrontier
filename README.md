@@ -71,7 +71,7 @@ In a nutshell, the **SignalPlus platform dramatically lowers the barriers to ent
 
 Without such a platform, it would be impossible to securely validate trades or to provide the professional trading infrastructure to promote a high quality data environment. By removing unwanted technical complexities, SignalPlus allows traders to focus on what really matters — their strategy — while ensuring a robust environment with the requisite fairness and transparency that will best accentuate the power of the Bittensor network as we unlock a new chapter in network-learning models.
 
-### [3.RankingModel](docs/introduction/RankingModelEN.md)
+### [3.RankingModel](docs/introduction/RankingRulesEN.md)
 
 ## How to Use Efficient Frontier
 
