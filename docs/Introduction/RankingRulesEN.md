@@ -27,10 +27,13 @@ The project goal is to reward strategies that can produce consistently positive 
 
     The performance of the strategy is exponentially weighted, giving more importance to recent results but still recognizing one's historical performance. Strategies that have performed better in the near term will receive higher scores.
 
-        Day_Weight =  EXP ^ ( - (Measurement_Day - Daily_Returns) / (Measurement_Day) )
-        Exponentially Weighed Daily Returns = Sum(Day_Weight * %_Return) / Sum (Day_Weights)
+    $$\text{Weighted Daily Returns = } \frac{\text{CrossProduct(DayWeights * Daily \\% Returns)}}{\text{Sum(DayWeights)}}$$
 
-4. Trading Frequency Adjustment
+    $$\text{DayWeight} = \exp(-\lambda \cdot \text{Return Decay} \cdot \text {(Measurement Date - Inception Date}))$$
+
+    $$\text{Return Decay =} \exp(\frac{\ln(20\\%)}{\text{14 Days}})$$
+
+4. Trading Frequency (λ)
 
     In order to accommodate different trading styles, we will give users the option to define their trading styles to be 'Frequent', 'Base', or 'Infrequent'.  The trading style selection will affect the decay weights of daily returns, with faster decay giving more weights to recent returns (high frequency), and slower decay favouring historical performance.
 
@@ -201,5 +204,5 @@ The project goal is to reward strategies that can produce consistently positive 
 |Balance_DayStart|Wallet balance at start of day|Starting principal|
 |Net_Inflows|Net change in inflows on the wallet|To account for any inflows during the day|
 |Daily $ Return|PNL made during the day (in USDT)|Actual PNL made|
-|Balance_DayEnd| $$\text{Balance\\_DayStart + Net\\_Inflows + Daily \\$ Return}$$ | Total wallet balance at end of day|
+|Balance_DayEnd| $$Sum(Balance\\_DayStart, Net\\_Inflows, Daily \\$ Return)$$ | Total wallet balance at end of day|
 |LTD|$$\le90\text{ days}$$|Life to date records of the strategy.  Currently capped at 90 days.|
