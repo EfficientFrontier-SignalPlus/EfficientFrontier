@@ -83,8 +83,6 @@ Subnet: 53
 
 It is recommended to use Python 3.11, as it helps avoid various issues and saves time.
 
-Run the subnet validator:
-
 ```bash
 pip install -r requirements.txt
 ```
@@ -106,8 +104,6 @@ You will see the below terminal output:
 ## 6. Run subnet validator
 
 It is recommended to use Python 3.11, as it helps avoid various issues and saves time.
-
-Run the subnet validator:
 
 ```bash
 pip install -r requirements.txt
