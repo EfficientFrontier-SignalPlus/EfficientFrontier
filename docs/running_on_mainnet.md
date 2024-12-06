@@ -1,8 +1,9 @@
 
 # Running Subnet on Mainnet
 
-### Please note, this is very important: currently, direct execution of the miner program is $\color{red}{\textsf{Not}}$ supported.
-### Please $\color{red}{\textsf{Do Not}}$ spend TAO to register as a miner at this time. Refer to [HowToJoin](Introduction/HowToJoin.md) to become our miner.
+### Note: We $\color{green}{\textsf{encourage}}$ you to independently deploy a fully operational miner on your own server at no cost, as long as you ensure that your miner program remains continuously online.
+### If you prefer not to manage a miner on Bittensor yourself, or are unsure how to do so, you have the option to use the SignalPlus-provided cloud hosting service. While this cloud hosting is currently free of charge, please be aware that it may become a paid service in the future.
+
 ---
 
 ## This tutorial explains how to become a validator on the mainnet.
@@ -78,7 +79,31 @@ Subnet: 53
 ```
 
 
-## 5. Run subnet validator
+## 5. Run subnet miner
+
+It is recommended to use Python 3.11, as it helps avoid various issues and saves time.
+
+Run the subnet validator:
+
+```bash
+pip install -r requirements.txt
+```
+
+You can obtain the **strategy_secret** from https://t.signalplus.com/mining
+
+Please keep your strategy_secret **secure** and avoid any leaks.
+```bash
+python run_miner.py --netuid 53 --subtensor.chain_endpoint finney --wallet.name miner --wallet.hotkey default --axon.port 9100 --logging.debug --env prod --neuron.strategy_secret strategy_secret
+```
+
+You will see the below terminal output:
+
+```bash
+>> 2024-10-22 11:45:02.206 |       INFO       | bittensor:loggingmachine.py:442 | Running validator Axon([::], 9100, 5F9KGGQuZms7Ph4QfwZp9pMWYaEcpJZc9kbom2ZYk, stopped, ['Synapse']) on network: finney with netuid: 53
+
+```
+
+## 6. Run subnet validator
 
 It is recommended to use Python 3.11, as it helps avoid various issues and saves time.
 
@@ -95,12 +120,11 @@ python run_validator.py --netuid 53 --subtensor.chain_endpoint finney --wallet.n
 You will see the below terminal output:
 
 ```bash
->> 2024-10-22 11:45:02.206 |       INFO       | bittensor:loggingmachine.py:442 | Running validator Axon([::], 9100, 5F9KGGQuZms7Ph4QfwZp9pMWYaEcpJZc9kbom2ZYk, stopped, ['Synapse']) on network: finney with netuid: 53
-
+| INFO     | _sdk.template.base.neuron:__init__:113 - Running neuron on subnet: 232 with uid 2 using network: wss://test.finney.opentensor.ai:443/
 ```
 
 
-## 6. Get emissions flowing
+## 7. Get emissions flowing
 Register a validator on the root subnet and boost to set weights for your subnet. This is a necessary step to ensure that the subnet is able to receive emissions.
 
 Register to the root network using the `btcli`:
@@ -115,6 +139,6 @@ Boost your subnet on the root subnet
 btcli root boost --netuid 53 --increase 1 --wallet.name validator --wallet.hotkey default --subtensor.chain_endpoint finney
 ```
 
-## 7. Stopping your nodes
+## 8. Stopping your nodes
 
 To stop your nodes, press CTRL + C in the terminal where the nodes are running.
