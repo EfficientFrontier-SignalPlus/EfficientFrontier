@@ -6,7 +6,7 @@
 
 ---
 
-## This tutorial explains how to become a validator on the mainnet.
+## This tutorial explains how to become a miner/validator on the mainnet.
 
 **DANGER**
 - Do not expose your private keys.
@@ -29,41 +29,38 @@ https://docs.bittensor.com/getting-started/wallets
 ## 2. Create wallets 
 **If you already have a wallet, please skip this step.**
 
-This step creates local coldkey and hotkey pairs for your validator.
+This step creates local coldkey and hotkey pairs for your miner/validator.
 
-The validator will be registered to the subnet. This ensures that the validator can run the respective validator scripts.
-
-
-Create a coldkey and hotkey for your validator wallet:
+Create a coldkey and hotkey for your miner/validator wallet:
 
 ```bash
-btcli wallet new_coldkey --wallet.name validator
+btcli wallet new_coldkey --wallet.name wallet_name
 ```
 
 and
 
 ```bash
-btcli wallet new_hotkey --wallet.name validator --wallet.hotkey default
+btcli wallet new_hotkey --wallet.name wallet_name --wallet.hotkey default
 ```
 
 ## 3. Register keys
 
-This step registers your subnet validator keys to the subnet, giving it a slots on the subnet.
+This step registers your subnet miner/validator keys to the subnet, giving it a slots on the subnet.
 
-register your validator key to the subnet:
+register your miner/validator key to the subnet:
 
 ```bash
-btcli subnet register --netuid 53 --subtensor.network finney --wallet.name validator --wallet.hotkey default
+btcli subnet register --netuid 53 --subtensor.network finney --wallet.name wallet_name --wallet.hotkey default
 ```
 
 ## 4. Check that your keys have been registered
 
 This step returns information about your registered keys.
 
-Check that your validator key has been registered:
+Check that your miner/validator key has been registered:
 
 ```bash
-btcli wallet overview --wallet.name validator --subtensor.network finney
+btcli wallet overview --wallet.name wallet_name --subtensor.network finney
 ```
 
 The above command will display the below:
@@ -79,7 +76,9 @@ Subnet: 53
 ```
 
 
-## 5. Run subnet miner
+## 5.Start the program
+
+- ### As a miner
 
 It is recommended to use Python 3.11, as it helps avoid various issues and saves time.
 
@@ -101,7 +100,7 @@ You will see the below terminal output:
 
 ```
 
-## 6. Run subnet validator
+- ### As a validator
 
 It is recommended to use Python 3.11, as it helps avoid various issues and saves time.
 
@@ -120,7 +119,7 @@ You will see the below terminal output:
 ```
 
 
-## 7. Get emissions flowing
+## 6. Get emissions flowing (validator only)
 Register a validator on the root subnet and boost to set weights for your subnet. This is a necessary step to ensure that the subnet is able to receive emissions.
 
 Register to the root network using the `btcli`:
@@ -135,6 +134,6 @@ Boost your subnet on the root subnet
 btcli root boost --netuid 53 --increase 1 --wallet.name validator --wallet.hotkey default --subtensor.chain_endpoint finney
 ```
 
-## 8. Stopping your nodes
+## 7. Stopping your nodes
 
 To stop your nodes, press CTRL + C in the terminal where the nodes are running.
