@@ -21,6 +21,7 @@ class SPApi:
         self.strategy_secret = strategy_secret
 
     def get_report_data(self, validator_uid, validator_version) -> dict:
+        logger.info(f'get report data, validator_uid: {validator_uid}, validator_version: {validator_version}')
         url = self.domain + Endpoint.GET_REPORT_DATA.value[1]
         body = {"strategySecret": self.strategy_secret,
                 "validatorVersion": validator_version,
