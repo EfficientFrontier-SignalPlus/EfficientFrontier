@@ -14,5 +14,5 @@ async def forward(strategy_secret, synapse: EFProtocol) -> EFProtocol:
         logger.error(f"get report data error: {e}")
         report_data = {}
     synapse.output = report_data
-    logger.info(f'my strategy data: {report_data}')
+    logger.info(f'my strategy data after deserialization: {report_data}')
     return synapse
