@@ -30,11 +30,13 @@ def reward(query: int, response: dict, miner_uid: int) -> float:
     - float: The reward value for the miner.
     """
     try:
+        logger.info(f"In reward start, miner_uid:{miner_uid}, query val: {query}, miner's data': {response}")
         if response == {}:
             return 0
         score_model = ReportDataHandler.create_score_model(response)
         score = score_model.score
-        logger.info(f"In reward, miner_uid:{miner_uid}, score: {score}, query val: {query}, miner's data': {response}")
+        logger.info(f"In reward end, miner_uid:{miner_uid}, score: {score}, "
+                    f"query val: {query}, miner's data': {response}")
         return score
     except Exception as e:
         logger.error(f"Error in rewards: {e}, miner data: {response}")
