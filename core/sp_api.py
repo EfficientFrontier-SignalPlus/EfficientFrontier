@@ -20,8 +20,9 @@ class SPApi:
         self.domain = get_env_setting().sp_api_domain
         self.strategy_secret = strategy_secret
 
-    def get_report_data(self, validator_uid, validator_version) -> dict:
-        logger.info(f'get report data, validator_uid: {validator_uid}, validator_version: {validator_version}')
+    def get_report_data(self, validator_uid, validator_version, validator_git_hash) -> dict:
+        logger.info(f'get report data, validator_uid: {validator_uid}, validator_version: {validator_version},'
+                    f'validator_git_hash: {validator_git_hash}')
         url = self.domain + Endpoint.GET_REPORT_DATA.value[1]
         body = {"strategySecret": self.strategy_secret,
                 "validatorVersion": validator_version,
@@ -55,6 +56,6 @@ class ReportDataHandler:
 
 if __name__ == '__main__':
     sp_api = SPApi('4082eb5d-61f1-48aa-b563-10291648b5ff')
-    report_data = sp_api.get_report_data('1','1')
+    report_data = sp_api.get_report_data('1', '1')
     score_model = ReportDataHandler.create_score_model(report_data)
     print(score_model.score)

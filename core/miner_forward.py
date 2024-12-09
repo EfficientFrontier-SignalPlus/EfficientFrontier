@@ -7,9 +7,10 @@ async def forward(strategy_secret, synapse: EFProtocol) -> EFProtocol:
     logger.info(f"miner forward()")
     validator_uid = synapse.input.get('validator_uid', -1)
     validator_version = synapse.input.get('validator_version', '0.0.0')
+    validator_git_hash = synapse.input.get('validator_git_hash', '0000000')
     sp_api = SPApi(strategy_secret)
     try:
-        report_data = sp_api.get_report_data(validator_uid,validator_version)
+        report_data = sp_api.get_report_data(validator_uid, validator_version, validator_git_hash)
     except Exception as e:
         logger.error(f"get report data error: {e}")
         report_data = {}

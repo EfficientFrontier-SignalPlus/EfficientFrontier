@@ -1,5 +1,6 @@
 import base64
 import os
+import subprocess
 
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives import hashes
@@ -47,6 +48,14 @@ def read_timestamp():
 def remove_timestamp_file():
     if os.path.exists(timestamp_file):
         os.remove(timestamp_file)
+
+
+def get_current_commit_hash():
+    try:
+        commit_hash = subprocess.check_output(["git", "rev-parse", "HEAD"]).decode("utf-8").strip()
+        return commit_hash
+    except Exception as e:
+        return "unknown"
 
 
 if __name__ == '__main__':
