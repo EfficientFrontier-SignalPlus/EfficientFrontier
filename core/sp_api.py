@@ -20,7 +20,7 @@ class SPApi:
         self.domain = get_env_setting().sp_api_domain
         self.strategy_secret = strategy_secret
 
-    def get_report_data(self, validator_uid, validator_version, validator_git_hash) -> dict:
+    def get_report_data(self, validator_uid, validator_version: int, validator_git_hash) -> dict:
         logger.info(f'get report data, validator_uid: {validator_uid}, validator_version: {validator_version}, '
                     f'validator_git_hash: {validator_git_hash}')
         url = self.domain + Endpoint.GET_REPORT_DATA.value[1]

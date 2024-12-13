@@ -6,7 +6,7 @@ from loguru import logger
 async def forward(strategy_secret, synapse: EFProtocol) -> EFProtocol:
     logger.info(f"miner forward()")
     validator_uid = synapse.input.get('validator_uid', -1)
-    validator_version = synapse.input.get('validator_version', '0.0.0')
+    validator_version = synapse.input.get('validator_version', 0)
     validator_git_hash = synapse.input.get('validator_git_hash', '0000000')
     sp_api = SPApi(strategy_secret)
     try:

@@ -15,6 +15,7 @@ ONE_DAY_MS = 24 * 60 * 60 * 1000  # milliseconds in one day
 class ScoreResult:
     quit: bool
     score: float
+    max_score: float
     exponentiallyWeighedDailyReturns: float
     worst14dDrawDown: float
     worst30dDrawDown: float
@@ -126,6 +127,12 @@ class ScoreModel(BaseModel):
         current_time_ms = int(datetime.now().timestamp() * 1000)
         return (current_time_ms - self.subNetCreateTime) <= 14 * ONE_DAY_MS
 
+    def max_score(self) -> float:
+        record_list = [it for it in self.sorted_list if self.measureTime - it.endTime < 7 * 24 * 60 * 60 * 1000]
+        _list = [v.equityEnd - v.netFlow for v in record_list]
+        average = sum(_list) / len(_list)
+        return average * 0.0001
+
     def calculate_score(self) -> float:
         if self.is_sub_net_init():
             if (self.measure_day_detail is None or self.measure_day_detail.equityStart < self.minBalance or
@@ -157,7 +164,8 @@ class ScoreModel(BaseModel):
                 mmr_score = s
 
             index_value_component = max(1.0, self.measure_day_detail.equityStart / 100_000)
-            return mmr_score * (1 + math.log(math.sqrt(index_value_component))) * 10
+            final_score = mmr_score * (1 + math.log(math.sqrt(index_value_component))) * 10
+            return min(final_score, self.max_score())
 
     def get_result(self) -> ScoreResult:
         if not self.sorted_list and not self.is_sub_net_init:
@@ -181,6 +189,7 @@ class ScoreModel(BaseModel):
         return ScoreResult(
             quit=self.quit,
             score=self.calculate_score(),
+            max_score=self.max_score(),
             exponentiallyWeighedDailyReturns=self.calculate_exponentially_weighed_daily_returns(),
             worst14dDrawDown=self.worst14d_draw_down,
             worst30dDrawDown=self.worst30d_draw_down
