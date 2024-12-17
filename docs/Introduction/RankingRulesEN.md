@@ -234,4 +234,4 @@ $$\text {AUM Adjustment Factor = Strategy Score} \cdot \text {(1+} \ln( \sqrt{ \
 |Net_Inflows|Net change in inflows on the wallet|To account for any inflows during the day|
 |Daily $ Return|PNL made during the day (in USDT)|Actual PNL made|
 |Balance_DayEnd| $$Sum(Balance\\_DayStart, Net\\_Inflows, Daily \\$ Return)$$ | Total wallet balance at end of day|
-|LTD|$$\le90\te90\text{ days}$$|Life to date records of the strategy.  Currently capped at 90 days.|
+|LTD|$$\le90\text{ days}$$|Life to date records of the strategy.  Currently capped at 90 days.|
