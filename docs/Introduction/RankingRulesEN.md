@@ -64,10 +64,20 @@ The project goal is to reward strategies that can produce consistently positive 
 
     For strategies achieving the same performance (i.e., return rate、drawdown), a higher AUM / wallet size will result in a higher score. This reflects the exponentially higher difficulty of managing larger portfolios, rewarding high-AUM strategies with an added scaling factor.
     
-        Final Score = Strategy Daily Score*(1+ln(sqrt(max(1, AUM/100k))))
-    ![](pics/AUMWalletSizeAdjustmentFactor1.png)
-    ![](pics/AUMWalletSizeAdjustmentFactor2.png)
+   
+$$\text {AUM Adjustment Factor = Strategy Score} \cdot \text {(1+} \ln( \sqrt{ \max{(1, \frac{\text{AUM}}{100,000}})}$$
 
+
+![](pics/AUMWalletSizeAdjustmentFactor1.png)
+![](pics/AUMWalletSizeAdjustmentFactor2.png)
+
+8. Scoring Cap vs AUM (Wallet Size)
+
+    Each mining strategy will have a daily scoring cap to prevent small wallet balances from having an outsized ranking impact from limited trade samples vs the entire subnet population.
+
+    $$\text {Scoring Cap = } \frac {\text{7 day Average Equity Balance}}{10,000}$$
+
+    eg. a 25k equity balance will have a scoring cap of 2.5
 
 ### ❌ Scoring Violations (i.e. Zero Score Conditions)
 
@@ -120,6 +130,10 @@ The project goal is to reward strategies that can produce consistently positive 
    
     Any trades flagged as off-market or wash trades will result in a zero score for the strategy on that day, regardless of any positive performance.
 
+    **We strongly condemn all malicious score-boosting activities.** The system automatically detects violations using the following three rules.
+   
+    Additionally, if a strategy is reported by users and verified to be in violation, a manual zero-score penalty may be applied. For severe cases, mining eligibility may be revoked. Please take your trading activities seriously.
+
     1. Rule 1
        
         For Option instruments specifically, a simultaneous violation of both conditions will result in a penalty:
@@ -132,31 +146,38 @@ The project goal is to reward strategies that can produce consistently positive 
           2. MTM value of the option is >50% of the mid-market mark of the premium price
           
         Calculation formulas will vary slightly depending on the underlying margin, but violations will be triggered when:
+       
         - For USDT-Margin instruments
+          
           $$ABS(filledPrice - markPrice) > underlyingPercent$$ AND
+          
           $$ABS(filledPrice - markPrice) > markPrice * Percent$$
           
         - For Coin-Margin Instruments
-          $$ABS(filledPrice - markPrice) > underlyingPrice * underlyingPercent$$
-          AND$$ABS(filledPrice - markPrice) > markPrice * Percent$$
+          
+          $$ABS(filledPrice - markPrice) > underlyingPrice * underlyingPercent$$ AND
+          
+          $$ABS(filledPrice - markPrice) > markPrice * Percent$$
 
-   2. Rule 2  【Added on November 26, 2024】
+   3. Rule 2  【Added on November 26, 2024】
        
         For option trades where markPrice > 50bp and filledPrice > 50bp, the following rule applies:
         If the total MTM value of all executed trades exceeds 100 USDT on the day, the average deviation of the executed vs marked price must not exceed 10% of the total notional value.
         
         Violations will be triggered when:
         - For USDT-Margin instruments
-          $$SUM(ABS(filledPrice - markPrice) * qty) > 100\:USDT$$ AND
           
-          $$SUM(ABS(filledPrice - markPrice) * Qty) / sum(markPrice * Qty) > 10%$$
+          $$SUM(ABS(filledPrice - markPrice) * qty) > 100 USDT$$ AND
+          
+          $$SUM(ABS(filledPrice - markPrice) * Qty) / SUM(markPrice * Qty) > 10$$
           
         - For Coin-Margin Instruments
-          $$SUM(ABS(filledPrice - markPrice) * qty * index) > 100\:USDT$$
           
-          AND$$SUM(ABS(filledPrice - markPrice) * Qty)\:/\:SUM(markPrice * Qty) > 10%$$
+          $$SUM(ABS(filledPrice - markPrice) * qty * index) > 100 USDT$$ AND
+          
+          $$SUM(ABS(filledPrice - markPrice) * Qty) / SUM(markPrice * Qty) > 10$$
 
-   3. Rule 3  【Added on November 28, 2024】
+   4. Rule 3  【Added on November 28, 2024】
        
         For option trades where markPrice < 3bp, the following rule applies:
        
@@ -177,20 +198,26 @@ The project goal is to reward strategies that can produce consistently positive 
     
     Rationale: to detect and prevent any potential wash trading or malicious wash trading aimed at generating profits.
 
+6. Duplicative Portfolios
+   
+   Miners who are suspected to be running equivalent, duplicative portfolios for the sake of earning multiple airdrops for the same 'strategy' will be invalidated for airdrop rewards.
+
+   Rationale: to prevent miners from gaming unjustified awards by splitting a single strategy into smaller wallets
+
 ### 🏅 Rankings and Rewards Distribution
 - Daily Rankings: Strategies are ranked based on their daily scores from the scoring formula, with higher scores leading to better sequential rankings.
 - Reward Distribution: 
-  - Please Note: The rewards for each day will be distributed after the conclusion of the next trading day.
-  - Rewards are distributed based on the strategy’s score relative to the Top-50 performing strategies on the day.
+  - Please Note: The rewards for each day will be distributed **after the conclusion of the next trading day.**
+  - Rewards are distributed based on the strategy’s score relative to the **Top-50 performing strategies** on the day.
   - The formula for calculating rewards is:
     
-        Strategy Reward = (Strategy's Daily Score / Total Daily Score of the Top-50 Strategies) * Total Daily Reward Pool of the Day
+       $$\text{Strategy Reward = } \frac {\text{Strategy's Daily Score (Capped)}}{\text{Total Daily Score of Top-50 Strategies}} \cdot \text{Total Daily Reward Pool}$$ 
 
 ### Ranking Model Parameters
 
 | FIELD  | DESCRIPTION  <p> [x] = Variable |RATIONALE|
 | ------------- | ------------- | ------------- |
-|  Ranking_Index <p> (Strategy Score)|  $$\frac {\text{Weighted Daily \\% Returns}}{\text{Maximum Decayed Drawdown}} \cdot 10$$|**Weighted Daily Returns / Maximum Drawdown Applied Against a Decay Factor**<p>Conceptually similar to a Calmar ratio, with some adjustments down to daily return weights in order to favour more recent performance.|
+|  Ranking_Index <p> (Strategy Score)|  $$\max{(\frac {\text{Weighted Daily \\% Returns}}{\text{Maximum Decayed Drawdown}} \cdot 10, \text{ Scoring Cap)}}$$|**Weighted Daily Returns / Maximum Drawdown Applied Against a Decay Factor (with a Scoring Cap)**<p>Conceptually similar to a Calmar ratio, with some adjustments down to daily return weights in order to favour more recent performance.|
 |  Weighed Daily Returns |  $$\frac{\text{CrossProduct(DayWeights * Daily \\% Returns)}}{\text{Sum(DayWeights)}}$$  |Time weighted daily returns|
 |DayWeight|$$\exp(-\lambda \cdot \text{Return Decay} \cdot \text {(Measurement Date - Inception Date}))$$|Day-weighting against a 14d / 20% half-life|
 |Trading Frequency (λ)|$$\text{\\{2,1,0\\}}$$<p>(Note: TBD, not yet implemented in current version)|Adjusts pace of return decay to trader frequency.<p>Faster decay = more weight on more recent performance|
@@ -199,10 +226,12 @@ The project goal is to reward strategies that can produce consistently positive 
 |Maximum Decayed Drawdown|$$\text{Min(Today's \\% Drawdown, (}\frac{\text{Trough Index Value}}{\text{Peak Index Value}}-1) \cdot \text{Drawdown Decay, -1\\%)}$$|Iteratively search for the worst peak-to-trough in % decayed drawdown on a life-to-date basis, with a floor value of -1%|
 |Drawdown Decay|$$\exp(\frac{\ln(80\\%)}{\text{14 Days}})$$|14-day half-life exponential decay to 80% on LTD peak-to-trough % drawdowns|
 |Index Value|$$\text{Yesterday's Index Value} \cdot \text{(1 + Daily \\% Return)}$$|Day 1 Value = 100<p>Keeps track of normalized portfolio value growth|
+|Scoring Cap|$$\frac {\text{7 day Average Equity Balance}}{10,000}$$|Strategy Score is capped by the 7d average balance of the equity (wallet) balance to prevent small wallet and trade samples to have an outsized ranking impact vs the entire subnet population. |
+|AUM Adjustment Factor|$$\text{Strategy Score} \cdot \text {(1+} \ln( \sqrt{ \max{(1, \frac{\text{AUM}}{100,000}})}$$|Scaling factor to adjustment for rising difficulties of managing a larger AUM portfolio.|
 |Measurement_Day|Current day|Current day|
 |Inception_Date|1st day for users to enter contest|Starts tracking|
 |Balance_DayStart|Wallet balance at start of day|Starting principal|
 |Net_Inflows|Net change in inflows on the wallet|To account for any inflows during the day|
 |Daily $ Return|PNL made during the day (in USDT)|Actual PNL made|
 |Balance_DayEnd| $$Sum(Balance\\_DayStart, Net\\_Inflows, Daily \\$ Return)$$ | Total wallet balance at end of day|
-|LTD|$$\le90\text{ days}$$|Life to date records of the strategy.  Currently capped at 90 days.|
+|LTD|$$\le90\te90\text{ days}$$|Life to date records of the strategy.  Currently capped at 90 days.|

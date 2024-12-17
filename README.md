@@ -14,11 +14,6 @@ Bittensor is a decentralized protocol specifically designed for machine learning
 
 At the core of Bittensor is its distinctive architecture, which combines specialized subnets for AI tasks, a blockchain for decentralized operations, and an API for seamless integration. This structure is considered crucial in positioning Bittensor as the leading network for AI services, catering to both individuals and corporations, with its native token, TAO, serving as the medium for transactions. As the network evolves, its goal is to accelerate the growth of AI by making sophisticated ML models accessible to a broader audience.
 
-### Powering a Trading Nexus with SignalPlus
-Built by an exceptional team of former banking and technology veterans, the SignalPlus terminal is the industry's leading derivative trading and options risk management platform that is well recognized by crypto's largest players and exchanges.  With a professional suite of automated and industrial-grade tools available to all, we now have a ready-made platform and built-in measurement tools to power the Bittensor network.
-
-Never has such a level-playing field been offered to the every day user, allowing each trader to focus on refining their craft rather than being inhibited by inadequate tools.  As a result, traders are empowered to develop better trading frameworks rather than risk tools, ensuring better trading results and quality data to train the machine learning processes.
-
 ## Design Ethos
 ### Defining 'Risk-Adjusted Returns'
 The quest for quality alpha and risk-adjusted returns has been a never-ending pursuit in the world of financial investments.  Risks are defined differently for different folks, and target returns will vary across people with different time horizons, financial circumstances, and available choices.
@@ -44,8 +39,16 @@ There are further considerations that we have incorporated in designing our rank
 - Time Horizon & Risk Preference: The measurement timeframes that our users would prefer are likely to be significantly shorter than a typical long-only manager,and with a more ambitious risk-return preference that is more representative of crypto.
 - Model Elegance & Simplicity: We will work within the limits of the dataset we are working with within a decentralized trading environment, and have designed a model that is grounded in simple practicality, where its construction and results can be easily appreciated by even the casual observer.
 
-## The SignalPlus Value Proposition
+## [RankingModel](docs/Introduction/RankingRulesEN.md)
+
+## SignalPlus's Role
+
+Built by an exceptional team of former banking and technology veterans, the SignalPlus terminal is the industry's leading derivative trading and options risk management platform that is well recognized by crypto's largest players and exchanges.  With a professional suite of automated and industrial-grade tools available to all, we now have a ready-made platform and built-in measurement tools to power the Bittensor network.
+
+Never has such a level-playing field been offered to the every day user, allowing each trader to focus on refining their craft rather than being inhibited by inadequate tools.  As a result, traders are empowered to develop better trading frameworks rather than risk tools, ensuring better trading results and quality data to train the machine learning processes.
+
 More so than many other projects, Efficient Frontier is a comprehensive initiative that relies on the unique infrastructure and capabilities of SignalPlus to ensure the integrity and accuracy of trading data. Current on-chain data infrastructure is not yet at the point where it can be used seamlessly or efficiently to deduce optimal trading strategies on its own, and this is where SignalPlus comes in.
+
 ### 1. Authenticity of Trading Data
 In any performance evaluation, the authenticity of the trading data is paramount. On-chain data alone is not able to recognize trading irregularities or factitious trades that were made to 'game' the system.
 
@@ -71,18 +74,49 @@ In a nutshell, the **SignalPlus platform dramatically lowers the barriers to ent
 
 Without such a platform, it would be impossible to securely validate trades or to provide the professional trading infrastructure to promote a high quality data environment. By removing unwanted technical complexities, SignalPlus allows traders to focus on what really matters — their strategy — while ensuring a robust environment with the requisite fairness and transparency that will best accentuate the power of the Bittensor network as we unlock a new chapter in network-learning models.
 
-### [3.RankingModel](docs/Introduction/RankingRulesEN.md)
+## Product Roadmap
 
-## How to Use Efficient Frontier
+### December 2024 Roadmap
+
+While SN53 is barely 1 month old, we are proud to report that there are over 60 miners with total positive trading profits surpassing US$2M since inception.  We are grateful for the tremendous support of our community and are hard at work to deliver a series of important milestone upgrades in the weeks ahead.
+
+![](docs/Introduction/pics/roadmap1.png)
+
+1. Continuous Refinement and Optimization of the Scoring System
+
+    We are continuously refining the scoring system to strike the right balance between ranking fairness and commercially meaningful results to highlight the best strategies.  With approximately 3 weeks of factual data, we are able to fine-tune our scoring rules to achieve even more representative rankings of our best miners.
+
+
+2. Support for Running Miners Locally
+
+    As one of the most requested features from our community, miners will be able to run their operations locally without relying on SignalPlus’s cloud server by next week.
+In the interim, miners' emissions can be viewed directly via the direct link within their personalized page to confirm their direct emissions via taostats.
+
+![](docs/Introduction/pics/roadmap2.png)
+
+![](docs/Introduction/pics/roadmap3.png)
+
+3. Providing Validators with Open API Access
+
+    By mid-December, we will be able to offer validators with an open API and subscription service to get access to real-time trading data. This will allow validators to verify strategies' effectiveness with various monetization possibilities, including early forms of 'copy trading'.
+(Dev Note: We prioritized the development of local mining support ahead of the API feature based on community feedback.  Please bear with us!)
+
+
+4. Enabling Validators to Perform All Calculations Independently
+
+    Currently, just 1-5% of calculations are still conducted 'centrally' as our scoring system is still being updated. We didn't want the hassle of troubling every individual validator to update their code manually on every minor model tweak, and this is strictly meant to be a temporary measure as we converge on our finalized model based on community feedback.
+We expect to fully decentralize this process (100% of calculations delegated) once the scoring model has stabilized, with an ETA of ~2-3 weeks into mid/late December.
+
+    Outside of this, we are brainstorming a number of interesting and innovative mechanisms to evolve our subnet to be even more aligned with Bittensor's network prediction initiatives.  Thank you for your continued support and we are extremely excited about our journey ahead!
+
+## User Guide
 
 ### Miners Installation
-- Please note, this is very important: currently, direct execution of the miner program is $\color{red}{\textsf{Not}}$ supported.
-- Please $\color{red}{\textsf{Do Not}}$ spend TAO to register as a miner at this time.
 - The miner will call the official public API to retrieve account-related metadata such as balance, equity, PnL, and drawdown, which are generated from the user's trading activities on the platform [t.signalplus.com](https://t.signalplus.com).
 - This data is then passed to the validator for evaluating the strategy's performance.
 - During transmission, asymmetric encryption is used to ensure the data remains untampered with, guaranteeing fairness and integrity.
 - You can find detailed instructions on how to become a miner via the following link: <p> [how-to-join-the-greatest-tournament-of-crypto](docs/Introduction/HowToJoin.md)
-
+- [running_miner_on_mainnet](docs/running_on_mainnet.md)
 
 ### Validator Installation
 - The validator locally synchronizes the latest blockchain and retrieves all metadata uploaded by the corresponding miners.
