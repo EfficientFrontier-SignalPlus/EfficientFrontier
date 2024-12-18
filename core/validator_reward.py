@@ -37,7 +37,7 @@ def reward(query: int, response: dict, miner_uid: int) -> float:
         if miner_uid != score_model.uid:
             logger.warning(f"Miner uid mismatch, miner_uid: {miner_uid}, score_model.uid: {score_model.uid}")
             return 0
-        if miner_uid in [95, 104, 105]:
+        if miner_uid in [55, 54, 44, 95, 78, 104, 40, 105, 35, 43]:
             logger.warning(f'ban miner_uid: {miner_uid}')
             return 0
         score = score_model.score
