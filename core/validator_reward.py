@@ -34,6 +34,12 @@ def reward(query: int, response: dict, miner_uid: int) -> float:
         if response == {}:
             return 0
         score_model = ReportDataHandler.create_score_model(response)
+        if miner_uid != score_model.uid:
+            logger.warning(f"Miner uid mismatch, miner_uid: {miner_uid}, score_model.uid: {score_model.uid}")
+            return 0
+        if miner_uid in [104, 105]:
+            logger.warning(f'ban miner_uid: {miner_uid}')
+            return 0
         score = score_model.score
         logger.info(f"In reward end, miner_uid:{miner_uid}, score: {score}")
         return score
