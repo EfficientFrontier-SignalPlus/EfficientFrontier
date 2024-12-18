@@ -19,6 +19,7 @@ import numpy as np
 import json
 from loguru import logger
 from core.sp_api import ReportDataHandler
+from core.utils import verify256
 
 
 def reward(query: int, response: dict, miner_uid: int) -> float:
@@ -33,7 +34,15 @@ def reward(query: int, response: dict, miner_uid: int) -> float:
         logger.info(f"In reward start, miner_uid:{miner_uid}, query val: {query}, miner's data': {response}")
         if response == {}:
             return 0
-        score_model = ReportDataHandler.create_score_model(response)
+
+        r = verify256(response['value']['rawData'], response['value']['signature'])
+        if not r:
+            logger.error(f"verify256 failed, miner_uid:{miner_uid}, response: {response}")
+            return 0
+        data_str = response.get('value').get('rawData')
+        data_json = json.loads(data_str)
+
+        score_model = ReportDataHandler.create_score_model(data_json)
         if miner_uid != score_model.uid:
             logger.warning(f"Miner uid mismatch, miner_uid: {miner_uid}, score_model.uid: {score_model.uid}")
             return 0

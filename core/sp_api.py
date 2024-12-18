@@ -34,12 +34,7 @@ class SPApi:
             logger.info(f'headers: {headers}, data: {data}')
             if data['code'] != 0:
                 raise Exception(f"Request failed, {Endpoint.GET_REPORT_DATA}, error message: {data['message']}")
-            r = verify256(data['value']['rawData'], data['value']['signature'])
-            if not r:
-                raise Exception('signature verify failed')
-            data_str = data.get('value').get('rawData')
-            data_json = json.loads(data_str)
-            return data_json
+            return data
         else:
             logger.debug(
                 f'{self.strategy_secret[:8]}***{self.strategy_secret[-8:]} get report data failed, status code: {response.status_code}')
@@ -56,6 +51,6 @@ class ReportDataHandler:
 
 if __name__ == '__main__':
     sp_api = SPApi('4082eb5d-61f1-48aa-b563-10291648b5ff')
-    report_data = sp_api.get_report_data('1', '1')
+    report_data = sp_api.get_report_data('1', '1', '1')
     score_model = ReportDataHandler.create_score_model(report_data)
     print(score_model.score)
