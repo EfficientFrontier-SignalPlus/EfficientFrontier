@@ -1,6 +1,6 @@
 # The MIT License (MIT)
 # Copyright © 2023 Yuma Rao
-
+import json
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 # documentation files (the “Software”), to deal in the Software without restriction, including without limitation
 # the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
@@ -21,7 +21,7 @@ from bittensor import logging
 
 from core.env_setting.env_utils import get_env_setting
 from core.protocol import EFProtocol
-from core.utils import get_current_commit_hash
+from core.utils import get_current_commit_hash, read_timestamp
 from core.validator_reward import get_rewards
 from _sdk.template.utils.uids import get_random_uids
 from loguru import logger
@@ -45,7 +45,9 @@ async def forward(validator):
             axons=[validator.metagraph.axons[uid] for uid in batch_uids],
             synapse=EFProtocol(input={'validator_uid': validator.uid,
                                       'validator_version': get_env_setting().validator_version,
-                                      'validator_git_hash': get_current_commit_hash()[:7]}),
+                                      'validator_git_hash': get_current_commit_hash()[:7],
+                                      'last_set_weights_success_time': read_timestamp()
+                                      }),
             deserialize=True,
         )
 
@@ -69,7 +71,8 @@ async def forward(validator):
                 if reward != 0:
                     reward_percentage = (reward / total_reward) * 100
                     log_str += (f"uid: {uid}, coldkey: {validator.metagraph.axons[uid].coldkey[:4]}, "
-                                f"strategyId: {response['strategyId'][-4:]}, "
+                                f"strategyId: "
+                                f"{json.loads(response.get('value').get('rawData')).get('strategyId')[-4:]}, "
                                 f"reward: {reward:.2f}, percentage: {reward_percentage:.2f}%\n")
             except Exception as e:
                 logger.error(f"Error in logging: {e}")
