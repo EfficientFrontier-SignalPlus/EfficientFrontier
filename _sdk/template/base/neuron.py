@@ -28,6 +28,7 @@ from _sdk.template.utils.misc import ttl_get_block
 from _sdk.template import __spec_version__ as spec_version
 from loguru import logger
 
+
 # from template.mock import MockSubtensor, MockMetagraph
 
 
@@ -171,11 +172,16 @@ class BaseNeuron(ABC):
             return False
 
         # Define appropriate logic for when set weights.
-        return (
-                (self.block - self.metagraph.last_update[self.uid])
-                > self.config.neuron.epoch_length
-                and self.neuron_type != "MinerNeuron"
-        )  # don't set weights if you're a miner
+        if self.neuron_type == "MinerNeuron":
+            return False
+
+        if (self.block - self.metagraph.last_update[self.uid]) > self.config.neuron.epoch_length:
+            return True
+        else:
+            logger.info(f'Waiting for Block: {self.block} - last_update: {self.metagraph.last_update[self.uid]} = '
+                        f'{(self.block - self.metagraph.last_update[self.uid])}, '
+                        f'which needs to exceed epoch_length of {self.config.neuron.epoch_length}.')
+            return False
 
     def save_state(self):
         logger.warning(
