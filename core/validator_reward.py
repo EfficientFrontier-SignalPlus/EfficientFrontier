@@ -52,7 +52,7 @@ def reward(query: int, response: dict, miner_uid: int) -> float:
         return score
     except Exception as e:
         logger.error(f"Error in rewards: {e}, miner data: {response}")
-        return None
+        return 0
 
 
 def get_rewards(query: int, responses: list, miner_uids: list) -> np.ndarray:
