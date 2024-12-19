@@ -4,42 +4,232 @@
   
 </div>
 
-## Introduction
-> Efficient Frontier: a set of optimal portfolios that offer the highest expected return for a defined level of risk, or the lowest risk for a given level of expected return.
+**Quick Overview of [Strategy Ranking Rules](docs/Introduction/RankingRulesEN.md)**
 
-Efficient Frontier is a project initiated by SignalPlus and Bittensor, designed to identify the optimal risk-weighted trading strategies through the integration of decentralized machine learning networks and live trading data. This project will leverage Bittensor's innovative blockchain-powered AI learning protocol to advance our journey in discovering optimal crypto trading strategies. Furthermore, through the use of SignalPlus' market-leading platform, every day users will now be equipped with a professional trading toolkit that is available right on their desktop, enabling true democratised access and empowering the open-access initiative.
+
+## Introduction
+   > Efficient Frontier: a set of optimal portfolios that offer the highest expected return for a defined level of risk, or the lowest risk for a given level of expected return.
+
+   Efficient Frontier is a project initiated by SignalPlus and Bittensor, designed to identify the optimal risk-weighted trading strategies through the integration of decentralized machine learning networks and live trading data. This project will leverage Bittensor's innovative blockchain-powered AI learning protocol to advance our journey in discovering optimal crypto trading strategies. Furthermore, through the use of SignalPlus' market-leading platform, every day users will now be equipped with a professional trading toolkit that is available right on their desktop, enabling true democratised access and empowering the open-access initiative.
 
 ### What is Bittensor?
-Bittensor is a decentralized protocol specifically designed for machine learning (ML) and artificial intelligence (AI). It offers a unique marketplace for both users and providers of ML algorithms, utilizing a decentralized network to facilitate the exchange of these resources. More than just a marketplace for ML models, Bittensor provides a platform for training these models in a censorship-resistant environment, challenging the resource-intensive monopolies of tech giants.
+   Bittensor is a decentralized protocol specifically designed for machine learning (ML) and artificial intelligence (AI). It offers a unique marketplace for both users and providers of ML algorithms, utilizing a decentralized network to facilitate the exchange of these resources. More than just a marketplace for ML models, Bittensor provides a platform for training these models in a censorship-resistant environment, challenging the resource-intensive monopolies of tech giants.
 
-At the core of Bittensor is its distinctive architecture, which combines specialized subnets for AI tasks, a blockchain for decentralized operations, and an API for seamless integration. This structure is considered crucial in positioning Bittensor as the leading network for AI services, catering to both individuals and corporations, with its native token, TAO, serving as the medium for transactions. As the network evolves, its goal is to accelerate the growth of AI by making sophisticated ML models accessible to a broader audience.
+   At the core of Bittensor is its distinctive architecture, which combines specialized subnets for AI tasks, a blockchain for decentralized operations, and an API for seamless integration. This structure is considered crucial in positioning Bittensor as the leading network for AI services, catering to both individuals and corporations, with its native token, TAO, serving as the medium for transactions. As the network evolves, its goal is to accelerate the growth of AI by making sophisticated ML models accessible to a broader audience.
 
 ## Design Ethos
 ### Defining 'Risk-Adjusted Returns'
-The quest for quality alpha and risk-adjusted returns has been a never-ending pursuit in the world of financial investments.  Risks are defined differently for different folks, and target returns will vary across people with different time horizons, financial circumstances, and available choices.
+   The quest for quality alpha and risk-adjusted returns has been a never-ending pursuit in the world of financial investments.  Risks are defined differently for different folks, and target returns will vary across people with different time horizons, financial circumstances, and available choices.
 
-However, capital preservation, efficient capital use, and high multiple returns are baseline concepts that should resonate with every investor, and sensible guidelines can be developed to separate a good money manager from another.
+   However, capital preservation, efficient capital use, and high multiple returns are baseline concepts that should resonate with every investor, and sensible guidelines can be developed to separate a good money manager from another.
 
-Ultimately, every investor is looking for some combination of trading's own 'impossible-trinity':
-> [!NOTE]
-> 1. Return --> High returns
-> 2. Risk control --> Minimal drawdowns
-> 3. Time --> Getting your money back earlier
+   Ultimately, every investor is looking for some combination of trading's own 'impossible-trinity':
+   > [!NOTE]
+   > 1. Return --> High returns
+   > 2. Risk control --> Minimal drawdowns
+   > 3. Time --> Getting your money back earlier
 
-In response, we have developed a ranking system that evaluates the 3 parameters in a normalized way that can accommodate different trading styles.
+   In response, we have developed a ranking system that evaluates the 3 parameters in a normalized way that can accommodate different trading styles.
 
 ### Paper Returns vs Actual Performance
-Traders are performance driven practitioners seeking quantifiable results, and are particularly in-tune with an increasingly data-driven world.  While academic literature provides value in its own way, there can be no substitute for actual performance, with the SignalPlus platform perfectly suited to provide the type of quality-filtered data that is needed to derive our crowd-driven, crypto-trading Efficient Frontier.
+   Traders are performance driven practitioners seeking quantifiable results, and are particularly in-tune with an increasingly data-driven world.  While academic literature provides value in its own way, there can be no substitute for actual performance, with the SignalPlus platform perfectly suited to provide the type of quality-filtered data that is needed to derive our crowd-driven, crypto-trading Efficient Frontier.
 
 ### Other Design Considerations
-There are further considerations that we have incorporated in designing our ranking model:
-- Trading Environment & Behavioural Limits: we are cognizant that our decentralized trading environment is fundamentally different than, say, a professional multi-strat hedge-fund, where their PMs are bound by the rules of employment with clear limits of what they are allowed or not allowed to trade.
-- Unconstrained User Entry & Exits: in the open-access world of crypto and networked mining, users are free to deploy their own trading frameworks with unrestrained entry and exit points, unlike 'fixed' measurement periods and fiscal periods for professional managers.
-- Single Strategies vs Diversified Portfolios:  our strategies are evaluated on a standalone rather than on a portfolio wide basis.  Benefits of portfolio hedging and diversification must be done on an individual basis rather than across 'PMs'.
-- Time Horizon & Risk Preference: The measurement timeframes that our users would prefer are likely to be significantly shorter than a typical long-only manager,and with a more ambitious risk-return preference that is more representative of crypto.
-- Model Elegance & Simplicity: We will work within the limits of the dataset we are working with within a decentralized trading environment, and have designed a model that is grounded in simple practicality, where its construction and results can be easily appreciated by even the casual observer.
+   There are further considerations that we have incorporated in designing our ranking model:
+   - Trading Environment & Behavioural Limits: we are cognizant that our decentralized trading environment is fundamentally different than, say, a professional multi-strat hedge-fund, where their PMs are bound by the rules of employment with clear limits of what they are allowed or not allowed to trade.
+   - Unconstrained User Entry & Exits: in the open-access world of crypto and networked mining, users are free to deploy their own trading frameworks with unrestrained entry and exit points, unlike 'fixed' measurement periods and fiscal periods for professional managers.
+   - Single Strategies vs Diversified Portfolios:  our strategies are evaluated on a standalone rather than on a portfolio wide basis.  Benefits of portfolio hedging and diversification must be done on an individual basis rather than across 'PMs'.
+   - Time Horizon & Risk Preference: The measurement timeframes that our users would prefer are likely to be significantly shorter than a typical long-only manager,and with a more ambitious risk-return preference that is more representative of crypto.
+   - Model Elegance & Simplicity: We will work within the limits of the dataset we are working with within a decentralized trading environment, and have designed a model that is grounded in simple practicality, where its construction and results can be easily appreciated by even the casual observer.
 
-## [RankingModel](docs/Introduction/RankingRulesEN.md)
+
+
+## Ranking Rules Overview
+   After creating a strategy, there will be a standardized process for calculating daily scores, determining rankings, and distributing rewards based on recent performance and adherence to specific conditions.
+
+   The project goal is to reward strategies that can produce consistently positive returns with minimal drawdowns, while applying penalties on certain conditions that may indicate trading violations or insufficient participation. 
+
+### ⏳ Observation Period
+   - 14-Day Lead-in: New strategies must undergo a 14-day observation period before they are eligible to be ranked for rewards. No scores will be calculated during this observation period.
+
+### 📈 Scoring Process
+   - Daily Scoring: At the end of the observation period, the strategy’s score will be calculated at the end of each trading day. A day is defined from 8:00 AM UTC to the next 8:00 AM UTC.
+   - Scoring Formula: The final score is derived as a ratio of the strategy's exponentially daily weighted returns against a rolling maximum peak-to-trough drawdown over the past 14 days.
+
+### 💯 Daily Score Calculations
+
+   - Daily Score Formula: 
+
+   $$\text{Strategy Score = } \frac {\text{Weighted Daily \% Returns}}{\text{Maximum Decayed Drawdown}} \cdot 10$$
+   
+
+1. Daily Return Calculation
+
+    At the end of each trading day, the platform will calculate the daily strategy PNL (in USDT). The return is derived by comparing the account balance at the start and end of the day, and adjusting for any deposits or withdrawals that might have occurred during the session.
+
+       $_Return  = Balance_DayEnd - Balance_DayStart - Net_Inflows
+
+2. Daily % Return Calculation
+
+    The Daily % Return is calculated by dividing the Daily Return by the average balance for the day, adjusting for any deposits or withdrawals. This represents the daily percentage return of the strategy.
+
+        %_Return = $_Return / Avg(Balance_DayStart, Balance_DayStart+Net_Inflows)
+
+3. Weighted Historical Performance
+
+    The performance of the strategy is exponentially weighted, giving more importance to recent results but still recognizing one's historical performance. Strategies that have performed better in the near term will receive higher scores.
+
+    $$\text{Weighted Daily Returns = } \frac{\text{CrossProduct(DayWeights * Daily \\% Returns)}}{\text{Sum(DayWeights)}}$$
+
+    $$\text{DayWeight} = \exp(-\lambda \cdot \text{Return Decay} \cdot \text {(Measurement Date - Inception Date}))$$
+
+    $$\text{Return Decay =} \exp(\frac{\ln(20\\%)}{\text{14 Days}})$$
+
+4. Trading Frequency (λ)
+
+    In order to accommodate different trading styles, we will give users the option to define their trading styles to be 'Frequent', 'Base', or 'Infrequent'.  The trading style selection will affect the decay weights of daily returns, with faster decay giving more weights to recent returns (high frequency), and slower decay favouring historical performance.
+
+    where λ = decay parameter
+      - λ = 2, faster decay
+      - λ  = 1, base decay
+      - λ = 0.5, slower decay
+   
+   (Note: This feature is currently disabled while we fine-tune our parameters to the appropriate decay factors)
+    
+   ![](docs/Introduction/pics/ExponentialDecayWithDifferentλValues.png)
+
+    To discourage inappropriate mis-use of the formula weights, there will be a 30-day cooldown period before a frequency change can be made again.
+
+5. Maximum Decayed Drawdown
+
+    The system measures the largest peak-to-trough capital drawdown incurred by the strategy on a life-to-date basis, but adjusted by a separate Drawdown Decay factor. A smaller drawdown will have a considerable impact on the final ranking score, rewarding strategies with strong risk discipline that can avoid taking large losses over time.
+
+    $$\text{Min(Today's \\% Drawdown, (}\frac{\text{Trough Index Value}}{\text{Peak Index Value}}-1) \cdot \text{Drawdown Decay, -1\\%)}$$
+
+    $$\text{Drawdown Decay =} \exp(\frac{\ln(80\\%)}{\text{14 Days}})$$
+
+6. Excessive Risk Taking Adjustment
+
+   Strategies that are excessively risk-levered with high margin usage will be subject to a score adjustment. Specifically, strategies that employ margin usage (as defined by the relevant CEX) in excess of 50% will see a 20% discount on their final score, and excesses of >80% will suffer a 50% discount.
+   
+   <div style="center;">
+      <img src="docs/Introduction/pics/ExcessiveRiskTakingAdjustment.png" alt="Excessive Risk Taking">
+   </div>
+
+7. AUM / Wallet Size Adjustment Factor
+
+    For strategies achieving the same performance (i.e., return rate、drawdown), a higher AUM / wallet size will result in a higher score. This reflects the exponentially higher difficulty of managing larger portfolios, rewarding high-AUM strategies with an added scaling factor.
+    
+   
+   $$\text {AUM Adjustment Factor = Strategy Score} \cdot \text {(1+} \ln( \sqrt{ \max{(1, \frac{\text{AUM}}{100,000}})}$$
+
+   <div style="display: flex; flex-direction: row; align-items: center;">
+     <img src="docs/Introduction/pics/AUMWalletSizeAdjustmentFactor1.png" alt="1" style="max-width: 50%; margin-right: 10px;">
+     <img src="docs/Introduction/pics/AUMWalletSizeAdjustmentFactor2.png" alt="2" style="max-width: 50%;">
+   </div>
+   
+8. Scoring Cap vs AUM (Wallet Size)
+
+    Each mining strategy will have a daily scoring cap to prevent small wallet balances from having an outsized ranking impact from limited trade samples vs the entire subnet population.
+
+    $$\text {Scoring Cap = } \frac {\text{7 day Average Equity Balance}}{10,000}$$
+
+    eg. a 25k equity balance will have a scoring cap of 2.5
+
+### ❌ Scoring Violations (i.e. Zero Score Conditions)
+
+  If a strategy violates any of the following rules, it will be penalized with a zero score against that day's positive return, while retaining the full impact of a negative drawdown.
+
+  Said in another way, miners who are subject to trading violations will have a maximum daily score of 0 with a downside score equal to its negative daily performance.
+
+1. Minimum Balance Requirement
+   
+    The wallet must have a minimum balance of at least 10,000 USDT at both the start and end of the trading day.  A trading day is defined with a start time of 8:00 AM UTC.
+
+    Rationale: to require enough 'skin in the game' to encourage authentic trading while minimizing outsized % gains from marginal wallets.
+
+2. Minimum Trading Volume Requirement
+   
+    To qualify for the daily scoring, each miner must meet a minimum adjusted trading volume of 5,000 USDT on each rolling 7-day trading period.  The adjusted volume is defined as follows across the different instruments:
+
+    Options:
+    - Adjusted Volume = Option Premium
+   
+    Futures and Spot:
+    - Adjusted Volume = Order Quantity × Order Price × Coin Ratio
+    - Coin Ratio: Varies by cryptocurrency and is based on the initial margin rates. For specific Coin Ratios, please refer to the [OKX Margin Rates](https://www.okx.com/trade-market/position/swap) page.
+  
+    Rationale: to require some minimal level of participation from traders to suggest that the trading strategy is still relevant.
+
+3. Net Withdrawal Restriction
+   
+    Strategies cannot have net withdrawal of capital (ie. Outflows > Inflows) on each trading day in order to qualify for return calculations. Any net withdrawals of capital from a strategy will result in a zero-score calculation against any positive performance on the day.
+
+    Rationale: users who 'cash out' of the strategies should no longer be eligible for rewards.
+
+4. Whitelisted Assets Requirement
+
+    Only transactions involving the following whitelisted assets and their derivatives (spot, futures, options) are eligible for scoring: 
+     - BTC, ETH, SOL
+     - USDT, USDC
+     - ADA, AVAX, BCH, BNB, DAI, DOGE, DOT, LEO, LINK, SHIB, SUI, TAO, TON, TRX, XRP.
+     
+     Trades involving any non-whitelisted assets or derivatives will result in a zero score for the day.
+   
+
+5. Platform Execution
+   
+    All eligible trades must be executed on the SignalPlus platform on all opening and closing trades; however, liquidation or settlement trades are exempted as they are automatically handled by exchanges.
+  
+    Rationale: to ensure the sanctity of the trading data as all trades must be authentic and commercially driven
+
+6. Off-Market and Wash-Trading Prevention
+   
+    Any trades flagged as off-market or wash trades will result in a zero score for the strategy on that day, regardless of any positive performance.
+
+    **We strongly condemn all malicious score-boosting activities.** The system automatically detects violations using the following three rules.
+   
+    Any suspicious activities identified through automated checks or manual reviews will result in penalties. A manual zero-score penalty may be applied.
+
+   1. Rule 1 - Price Deviation Checks: For option instruments specifically, a significant deviation between the transaction price and the mark price will result in a penalty.
+
+   2. Rule 2 - Unusual Trading Patterns: Engaging in irregular trading behaviors, such as using duplicate or identical portfolios to claim multiple airdrops for the same strategy, artificially inflating trading volume, or conducting circular trades between accounts, etc.,  will result in disqualification from receiving airdrop rewards. These activities will also trigger automated alerts for further investigation.
+
+   3. Rule 3 - Profit Threshold Violations: Any potential wash trading or malicious wash trading aimed at generating profits will be detected and prohibited, including activities such as disproportionately exploiting price spreads, etc.
+  
+   4. Rule 4: Please refrain from using inappropriate or offensive words as strategy names or trader handles, as such actions will result in penalties.
+
+### 🏅 Rankings and Rewards Distribution
+- Daily Rankings: Strategies are ranked based on their daily scores from the scoring formula, with higher scores leading to better sequential rankings.
+- Reward Distribution: 
+  - Please Note: The rewards for each day will be distributed **after the conclusion of the next trading day.**
+  - Rewards are distributed based on the strategy’s score relative to the **Top-50 performing strategies** on the day.
+  - The formula for calculating rewards is:
+    
+       $$\text{Strategy Reward = } \frac {\text{Strategy's Daily Score (Capped)}}{\text{Total Daily Score of Top-50 Strategies}} \cdot \text{Total Daily Reward Pool}$$ 
+
+### Model Parameters
+
+| FIELD  | DESCRIPTION  <p> [x] = Variable |RATIONALE|
+| ------------- | ------------- | ------------- |
+|  Ranking_Index <p> (Strategy Score)|  $$\max{(\frac {\text{Weighted Daily \\% Returns}}{\text{Maximum Decayed Drawdown}} \cdot 10, \text{ Scoring Cap)}}$$|**Weighted Daily Returns / Maximum Drawdown Applied Against a Decay Factor (with a Scoring Cap)**<p>Conceptually similar to a Calmar ratio, with some adjustments down to daily return weights in order to favour more recent performance.|
+|  Weighed Daily Returns |  $$\frac{\text{CrossProduct(DayWeights * Daily \\% Returns)}}{\text{Sum(DayWeights)}}$$  |Time weighted daily returns|
+|DayWeight|$$\exp(-\lambda \cdot \text{Return Decay} \cdot \text {(Measurement Date - Inception Date}))$$|Day-weighting against a 14d / 20% half-life|
+|Trading Frequency (λ)|$$\text{\\{2,1,0\\}}$$<p>(Note: TBD, not yet implemented in current version)|Adjusts pace of return decay to trader frequency.<p>Faster decay = more weight on more recent performance|
+|Return Decay|$$\exp(\frac{\ln(20\\%)}{\text{14 Days}})$$|14-day half-life exponential decay to 20% on historical returns|
+|Daily % Returns|$$\frac {\text{Daily \\$ Return}}{\text{Avg(Balance\\_DayStart, Balance\\_DayStart + Net\\_Inflows)}}$$|Calculate daily % return adjusted (approx) by any daily Net_Inflows|
+|Maximum Decayed Drawdown|$$\text{Min(Today's \\% Drawdown, (}\frac{\text{Trough Index Value}}{\text{Peak Index Value}}-1) \cdot \text{Drawdown Decay, -1\\%)}$$|Iteratively search for the worst peak-to-trough in % decayed drawdown on a life-to-date basis, with a floor value of -1%|
+|Drawdown Decay|$$\exp(\frac{\ln(80\\%)}{\text{14 Days}})$$|14-day half-life exponential decay to 80% on LTD peak-to-trough % drawdowns|
+|Index Value|$$\text{Yesterday's Index Value} \cdot \text{(1 + Daily \\% Return)}$$|Day 1 Value = 100<p>Keeps track of normalized portfolio value growth|
+|Scoring Cap|$$\frac {\text{7 day Average Equity Balance}}{10,000}$$|Strategy Score is capped by the 7d average balance of the equity (wallet) balance to prevent small wallet and trade samples to have an outsized ranking impact vs the entire subnet population. |
+|AUM Adjustment Factor|$$\text{Strategy Score} \cdot \text {(1+} \ln( \sqrt{ \max{(1, \frac{\text{AUM}}{100,000}})}$$|Scaling factor to adjustment for rising difficulties of managing a larger AUM portfolio.|
+|Measurement_Day|Current day|Current day|
+|Inception_Date|1st day for users to enter contest|Starts tracking|
+|Balance_DayStart|Wallet balance at start of day|Starting principal|
+|Net_Inflows|Net change in inflows on the wallet|To account for any inflows during the day|
+|Daily $ Return|PNL made during the day (in USDT)|Actual PNL made|
+|Balance_DayEnd| $$Sum(Balance\\_DayStart, Net\\_Inflows, Daily \\$ Return)$$ | Total wallet balance at end of day|
+|LTD|$$\le90\text{ days}$$|Life to date records of the strategy.  Currently capped at 90 days.|
 
 ## SignalPlus's Role
 
@@ -131,6 +321,7 @@ SignalPlus will provide a special API which will allow validators to obtain real
 1. Verify the validity of all transactions in real time;
 2. Monitor the miners' trading activities
 3. Design certain products and services based on observed trading signals
+
 Please note, this API will only be made available to validators and not all users to encourage more active network participation.
 
 
@@ -149,9 +340,6 @@ By handling the TAO acquisition and payment process, we aim to make it as easy a
 
 
 ## FAQ
-
-### When is the Target Launch Date?
-- Mid to Late October 2024.
 
 ### What are the expected operations for a miner?
 - You need to operate with a certain capital base, be actively trading, with a goal of maximizing your return against the lowest possible drawdowns via the [t.signalplus.com](https://t.signalplus.com) platform.
@@ -178,21 +366,6 @@ By handling the TAO acquisition and payment process, we aim to make it as easy a
 - All data that will be used for ranking purposes come from real, factual trades that take place on CEX with actual monetary exchanges.  Outside of our own platform validation, these are trades that have been recognized and recorded on exchanges' own platforms.
 - All transactions are recorded in chronological order in real-time, with PNL results calculated at the end of the mark as per any professional trading outfit.
 - Finally, we have built-in further 'sanity checks' to ensure that even the exchange trades are 'commercially-authentic' versus the current market levels and current traded prices.
-  
-### Are there any additional rules we need to comply with for ranking considerations?
-- Yes, please see an outline below for the current requirements. Additional modifications might be added overtime based on user feedback and project iterations.
-- Users must comply with all of the following rules in order for their scores to be counted for daily rewards rankings.
-- Any parameter violation will lead to a zero score, and the daily return number will not be used in any of the model formula calculations.
-- However, negative daily returns will always be counted in the user's score rankings, regardless of any condition, thus downside protection and risk management are key for long-term success.
-  
-|RULE DEFINITION|VARIABLE|RATIONALE|
-|--|--|--|
-|Minimum Maintenance Wallet Size|[USDT 10,000]|Rankings are based on normalized % balances to equalize different sizes, and a minimum threshold is applied in order to filter out excessively large % gains from marginal wallets.|
-|24 Hour Period|[4pm HKT] cycles|For daily ranking measurements.|
-|Minimum Daily Trading Volumes|(Daily Option Premium Traded + Daily Initial Margin Traded in Futures) > USDT 1,000|Requirement for users to remain 'active' in daily trading to stay in-scope for rewards rankings.|
-|Withdrawal Limits|Net cashflow into the account must be positive (>0) each day in order for the day's return to quality for ranking calculations.  Ie. There cannot be net cash withdrawals.|Prevent users from getting a lucky big win early then cashing out, while leaving a small balance to keep rewards farming.<p><p>Users are allowed to withdraw anytime, as long as they acknowledge that their results will not be counted.|
-|Execution Through SignalPlus Platform|All order executions must be executed through SignalPlus's designated platform in order to be considered for rewards rankings.|To ensure trading data authenticity and validation of the day's trading results.|
-|Negative Daily Returns|Negative daily returns will always be included in ranking calculations.|To prevent users from trying to 'take out' their negative return days by purposely violating one of the prior parameters to inflate their negative drawdown measures.<p><p>Emphasize the importance of loss protection and risk management discipline.|
 
 ## License
 This repository is licensed under the MIT License.

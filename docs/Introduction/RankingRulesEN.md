@@ -1,16 +1,62 @@
-## Strategy Ranking Rules Overview
-After creating a strategy, there will be a standardized process for calculating daily scores, determining rankings, and distributing rewards based on recent performance and adherence to specific conditions.
+Last Updated: December 12th, 2024
+Introduction: Showcase your trading strategies! Strategies that consistently deliver profits with minimal drawdowns will be eligible for substantial airdrops!
 
-The project goal is to reward strategies that can produce consistently positive returns with minimal drawdowns, while applying penalties on certain conditions that may indicate trading violations or insufficient participation. 
+## Summary Flowchart
+![summary_flowchart.png](pics/summary_flowchart.png)
 
-### ⏳ Observation Period
-- 14-Day Lead-in: New strategies must undergo a 14-day observation period before they are eligible to be ranked for rewards. No scores will be calculated during this observation period.
+### 1. Participate in Mining
+- Visit [t.signalplus.com](http://t.signalplus.com/)
+- Click [Start Mining], bind your trading account to be showcased publicly, and pay the participation fee.
+- ⚠️ Note: The initial equity in the linked account must be at least 10,000 USDT (or equivalent) to qualify for participation.
+![participate_in_mining1.png](pics/participate_in_mining1.png)
+![participate_in_mining2.png](pics/participate_in_mining2.png)
 
-### 📈 Scoring Process
-- Daily Scoring: At the end of the observation period, the strategy’s score will be calculated at the end of each trading day. A day is defined from 8:00 AM UTC to the next 8:00 AM UTC.
-- Scoring Formula: The final score is derived as a ratio of the strategy's exponentially daily weighted returns against a rolling maximum peak-to-trough drawdown over the past 14 days.
+## 2. 14-Day Observation Period
+- New strategies must undergo a 14-day observation period before becoming eligible for rewards. During this period, trading performance and behavior will be evaluated for ranking.
 
-### 💯 Daily Score Calculations
+## 3.Ranking Rules
+
+3.1 Overview
+
+  Objective: The platform rewards strategies that consistently generate profits with minimal drawdowns while penalizing those suspected of unfair practices or low engagement.
+  - Earn Airdrop Bonuses: Scores are calculated based on time-weighted returns (with today's weight being the highest). Positive scores will qualify for airdrop bonuses.
+  - Scoring Formula: Scores are derived from the ratio of the strategy’s weighted daily returns to its maximum decayed drawdown.
+  - Trading Day Definition: From 8:00 AM UTC to 8:00 AM UTC the next day.
+  - Penalty for Violations: Strategies with positive returns that breach any rules in Section 3.3 will receive a score of zero for the day.
+  
+3.2 Ranking and Reward Distribution
+
+  - Daily Ranking: Strategies are ranked based on their scores, with higher scores achieving higher ranks.
+  - Reward Distribution:
+    - Your score is compared to the total scores of all strategies, with higher scores earning a larger share of the rewards.
+    - Only the top 50 strategies based on returns will qualify for rewards.
+    - Rewards are distributed the following trading day after verification (refer to 3.1 for eligibility).
+    - Reward Formula: Scores are calculated using the ratio of weighted daily returns to maximum decayed drawdown.
+  
+    Daily Score Formula:
+$$\text{Strategy Score = } \frac {\text{Weighted Daily \\% Returns}}{\text{Maximum Decayed Drawdown}} \cdot 10$$
+    
+### 3.3 Violating Strategies
+
+  Strategies with positive returns will receive a score of 0 for the day if they violate any of the following rules:
+  1. Minimum Balance Requirement: Account balances must remain above 10,000 USDT (or equivalent) at the start and end of the trading day.
+  2. Minimum Trading Volume: Total trading volume for the past 7 days must be at least 5,000 USDT, calculated as follows:
+    
+     - Options: Volume = Option Premiums
+     - Futures and Spot: Volume = Order Quantity × Order Price × Token Ratio (based on cryptocurrency type and initial margin rates; see [OKX Margin Rates](https://www.okx.com/trade-market/position/swap) for details).
+  3. Net Withdrawal Restriction: No net outflows (withdrawals > deposits) are allowed during the trading day.
+  4. Whitelisted Assets: Only trades involving the following assets or their derivatives (spot, futures, options) will count toward scores:
+     - BTC, ETH, SOL
+     - USDT, USDC
+     - ADA, AVAX, BCH, BNB, DAI, DOGE, DOT, LEO, LINK, SHIB, SUI, TAO, TON, TRX, XRP.
+  5. Execution via SignalPlus: All eligible trades must be executed on the SignalPlus platform, except for liquidations or settlements handled by the exchange.
+  6. No Wash Trades or Manipulative Activity:
+  Strategies must be logical and educational, helping others learn and understand the market. Trades must reflect genuine market insights.
+     - Strategies aiming to manipulate returns or undermine fairness will be disqualified, with all rewards forfeited.
+     - Severe violations will lead to permanent disqualification and the recovery of any rewards that have been distributed.
+    
+### 3.4 Scoring Details
+
 1. Daily Return Calculation
 
     At the end of each trading day, the platform will calculate the daily strategy PNL (in USDT). The return is derived by comparing the account balance at the start and end of the day, and adjusting for any deposits or withdrawals that might have occurred during the session.
@@ -37,22 +83,24 @@ The project goal is to reward strategies that can produce consistently positive 
 
     In order to accommodate different trading styles, we will give users the option to define their trading styles to be 'Frequent', 'Base', or 'Infrequent'.  The trading style selection will affect the decay weights of daily returns, with faster decay giving more weights to recent returns (high frequency), and slower decay favouring historical performance.
 
-      $$
-      \text{Weight}(d) = \exp\left(-\lambda \cdot \frac{N-d}{N}\right)$$
-
     where λ = decay parameter
       - λ = 2, faster decay
       - λ  = 1, base decay
       - λ = 0.5, slower decay
-    ![](pics/ExponentialDecayWithDifferentλValues.png)
 
-    To discourage inappropriate mis-use of the formula weights, there will be a 30-day cooldown period before a frequency change can be made again.
+   (Note: This feature is currently disabled while we fine-tune our parameters to the appropriate decay factors)
+    
+   ![](pics/ExponentialDecayWithDifferentλValues.png)
 
-5. 14-Day Maximum Drawdown
+   To discourage inappropriate mis-use of the formula weights, there will be a 30-day cooldown period before a frequency change can be made again.
 
-    The system measures the largest peak-to-trough capital drawdown incurred by the strategy on a rolling 14-day basis. A smaller drawdown will have a considerable impact on the final ranking score, rewarding strategies with strong risk discipline that can avoid taking large losses over time.
-   
-        Strategy Daily Score = Exponentially Weighted Daily Returns / ABS [Min (-1%, 14D Max Drawdown ) ]
+5. Maximum Decayed Drawdown
+
+    The system measures the largest peak-to-trough capital drawdown incurred by the strategy on a life-to-date basis, but adjusted by a separate Drawdown Decay factor. A smaller drawdown will have a considerable impact on the final ranking score, rewarding strategies with strong risk discipline that can avoid taking large losses over time.
+
+    $$\text{Min(Today's \\% Drawdown, (}\frac{\text{Trough Index Value}}{\text{Peak Index Value}}-1) \cdot \text{Drawdown Decay, -1\\%)}$$
+
+    $$\text{Drawdown Decay =} \exp(\frac{\ln(80\\%)}{\text{14 Days}})$$
 
 6. Excessive Risk Taking Adjustment
 
@@ -71,167 +119,3 @@ $$\text {AUM Adjustment Factor = Strategy Score} \cdot \text {(1+} \ln( \sqrt{ \
 ![](pics/AUMWalletSizeAdjustmentFactor1.png)
 ![](pics/AUMWalletSizeAdjustmentFactor2.png)
 
-8. Scoring Cap vs AUM (Wallet Size)
-
-    Each mining strategy will have a daily scoring cap to prevent small wallet balances from having an outsized ranking impact from limited trade samples vs the entire subnet population.
-
-    $$\text {Scoring Cap = } \frac {\text{7 day Average Equity Balance}}{10,000}$$
-
-    eg. a 25k equity balance will have a scoring cap of 2.5
-
-### ❌ Scoring Violations (i.e. Zero Score Conditions)
-
-  If a strategy violates any of the following rules, it will be penalized with a zero score against that day's positive return, while retaining the full impact of a negative drawdown.
-
-  Said in another way, miners who are subject to trading violations will have a maximum daily score of 0 with a downside score equal to its negative daily performance.
-
-1. Minimum Balance Requirement
-   
-    The wallet must have a minimum balance of at least 10,000 USDT at both the start and end of the trading day.  A trading day is defined with a start time of 8:00 AM UTC.
-
-    Rationale: to require enough 'skin in the game' to encourage authentic trading while minimizing outsized % gains from marginal wallets.
-
-2. Minimum Trading Volume Requirement
-   
-    To qualify for the daily scoring, each miner must meet a minimum adjusted trading volume of 5,000 USDT on each rolling 7-day trading period.  The adjusted volume is defined as follows across the different instruments:
-
-    Options:
-    - Adjusted Volume = Option Premium
-   
-    Futures and Spot:
-    - Adjusted Volume = Order Quantity × Order Price × Coin Ratio
-    - Coin Ratio: Varies by cryptocurrency and is based on the initial margin rates. For specific Coin Ratios, please refer to the [OKX Margin Rates](https://www.okx.com/trade-market/position/swap) page.
-  
-    Rationale: to require some minimal level of participation from traders to suggest that the trading strategy is still relevant.
-
-3. Net Withdrawal Restriction
-   
-    Strategies cannot have net withdrawal of capital (ie. Outflows > Inflows) on each trading day in order to qualify for return calculations. Any net withdrawals of capital from a strategy will result in a zero-score calculation against any positive performance on the day.
-
-    Rationale: users who 'cash out' of the strategies should no longer be eligible for rewards.
-
-4. Whitelisted Assets Requirement
-
-    Only transactions involving the following whitelisted assets and their derivatives (spot, futures, options) are eligible for scoring: 
-     - BTC, ETH, SOL
-     - USDT, USDC
-     - ADA, AVAX, BCH, BNB, DAI, DOGE, DOT, LEO, LINK, SHIB, SUI, TAO, TON, TRX, XRP.
-     
-     Trades involving any non-whitelisted assets or derivatives will result in a zero score for the day.
-   
-
-5. Platform Execution
-   
-    All eligible trades must be executed on the SignalPlus platform on all opening and closing trades; however, liquidation or settlement trades are exempted as they are automatically handled by exchanges.
-  
-    Rationale: to ensure the sanctity of the trading data as all trades must be authentic and commercially driven
-
-6. Off-Market and Wash-Trading Prevention
-   
-    Any trades flagged as off-market or wash trades will result in a zero score for the strategy on that day, regardless of any positive performance.
-
-    **We strongly condemn all malicious score-boosting activities.** The system automatically detects violations using the following three rules.
-   
-    Additionally, if a strategy is reported by users and verified to be in violation, a manual zero-score penalty may be applied. For severe cases, mining eligibility may be revoked. Please take your trading activities seriously.
-
-    1. Rule 1
-       
-        For Option instruments specifically, a simultaneous violation of both conditions will result in a penalty:
-        - BTC/ETH Options: 
-          1. MTM value of the option is >30bp of the underlying token's value AND
-          2. MTM value of the option is >30% of the mid-market mark of the premium price
-             
-        - All Other Options: 
-          1. MTM value of the option is >50bp of the underlying token's value AND
-          2. MTM value of the option is >50% of the mid-market mark of the premium price
-          
-        Calculation formulas will vary slightly depending on the underlying margin, but violations will be triggered when:
-       
-        - For USDT-Margin instruments
-          
-          $$ABS(filledPrice - markPrice) > underlyingPercent$$ AND
-          
-          $$ABS(filledPrice - markPrice) > markPrice * Percent$$
-          
-        - For Coin-Margin Instruments
-          
-          $$ABS(filledPrice - markPrice) > underlyingPrice * underlyingPercent$$ AND
-          
-          $$ABS(filledPrice - markPrice) > markPrice * Percent$$
-
-   3. Rule 2  【Added on November 26, 2024】
-       
-        For option trades where markPrice > 50bp and filledPrice > 50bp, the following rule applies:
-        If the total MTM value of all executed trades exceeds 100 USDT on the day, the average deviation of the executed vs marked price must not exceed 10% of the total notional value.
-        
-        Violations will be triggered when:
-        - For USDT-Margin instruments
-          
-          $$SUM(ABS(filledPrice - markPrice) * qty) > 100 USDT$$ AND
-          
-          $$SUM(ABS(filledPrice - markPrice) * Qty) / SUM(markPrice * Qty) > 10$$
-          
-        - For Coin-Margin Instruments
-          
-          $$SUM(ABS(filledPrice - markPrice) * qty * index) > 100 USDT$$ AND
-          
-          $$SUM(ABS(filledPrice - markPrice) * Qty) / SUM(markPrice * Qty) > 10$$
-
-   4. Rule 3  【Added on November 28, 2024】
-       
-        For option trades where markPrice < 3bp, the following rule applies:
-       
-        If the total spread PnL of all executed trades exceeds 0.2% of the day's initial equity, it will be considered a violation.
-        
-        Calculation formulas：
-        1. Spread Calculation
-              - For a Buy order:  $$Spread = markPrice - filledPrice$$ 
-              - For a Sell order:  $$Spread = filledPrice - markPrice$$
-   
-        2. Spread Value in USDT
-              - For USDT-Margin instruments:  $$Spread = spread × qty$$ 
-              - For Coin-Margin instruments:  $$Spread = spread × indexPrice × qty$$
-            
-        3. Violation Threshold
-              - Calculate the sum of all spread values for the day. The profit spread and loss spread will offset each other, and the final total spread is obtained.
-              If $$totalSpread / equityStart > 0.002$$,  the trade violates the rule.
-    
-    Rationale: to detect and prevent any potential wash trading or malicious wash trading aimed at generating profits.
-
-6. Duplicative Portfolios
-   
-   Miners who are suspected to be running equivalent, duplicative portfolios for the sake of earning multiple airdrops for the same 'strategy' will be invalidated for airdrop rewards.
-
-   Rationale: to prevent miners from gaming unjustified awards by splitting a single strategy into smaller wallets
-
-### 🏅 Rankings and Rewards Distribution
-- Daily Rankings: Strategies are ranked based on their daily scores from the scoring formula, with higher scores leading to better sequential rankings.
-- Reward Distribution: 
-  - Please Note: The rewards for each day will be distributed **after the conclusion of the next trading day.**
-  - Rewards are distributed based on the strategy’s score relative to the **Top-50 performing strategies** on the day.
-  - The formula for calculating rewards is:
-    
-       $$\text{Strategy Reward = } \frac {\text{Strategy's Daily Score (Capped)}}{\text{Total Daily Score of Top-50 Strategies}} \cdot \text{Total Daily Reward Pool}$$ 
-
-### Ranking Model Parameters
-
-| FIELD  | DESCRIPTION  <p> [x] = Variable |RATIONALE|
-| ------------- | ------------- | ------------- |
-|  Ranking_Index <p> (Strategy Score)|  $$\max{(\frac {\text{Weighted Daily \\% Returns}}{\text{Maximum Decayed Drawdown}} \cdot 10, \text{ Scoring Cap)}}$$|**Weighted Daily Returns / Maximum Drawdown Applied Against a Decay Factor (with a Scoring Cap)**<p>Conceptually similar to a Calmar ratio, with some adjustments down to daily return weights in order to favour more recent performance.|
-|  Weighed Daily Returns |  $$\frac{\text{CrossProduct(DayWeights * Daily \\% Returns)}}{\text{Sum(DayWeights)}}$$  |Time weighted daily returns|
-|DayWeight|$$\exp(-\lambda \cdot \text{Return Decay} \cdot \text {(Measurement Date - Inception Date}))$$|Day-weighting against a 14d / 20% half-life|
-|Trading Frequency (λ)|$$\text{\\{2,1,0\\}}$$<p>(Note: TBD, not yet implemented in current version)|Adjusts pace of return decay to trader frequency.<p>Faster decay = more weight on more recent performance|
-|Return Decay|$$\exp(\frac{\ln(20\\%)}{\text{14 Days}})$$|14-day half-life exponential decay to 20% on historical returns|
-|Daily % Returns|$$\frac {\text{Daily \\$ Return}}{\text{Avg(Balance\\_DayStart, Balance\\_DayStart + Net\\_Inflows)}}$$|Calculate daily % return adjusted (approx) by any daily Net_Inflows|
-|Maximum Decayed Drawdown|$$\text{Min(Today's \\% Drawdown, (}\frac{\text{Trough Index Value}}{\text{Peak Index Value}}-1) \cdot \text{Drawdown Decay, -1\\%)}$$|Iteratively search for the worst peak-to-trough in % decayed drawdown on a life-to-date basis, with a floor value of -1%|
-|Drawdown Decay|$$\exp(\frac{\ln(80\\%)}{\text{14 Days}})$$|14-day half-life exponential decay to 80% on LTD peak-to-trough % drawdowns|
-|Index Value|$$\text{Yesterday's Index Value} \cdot \text{(1 + Daily \\% Return)}$$|Day 1 Value = 100<p>Keeps track of normalized portfolio value growth|
-|Scoring Cap|$$\frac {\text{7 day Average Equity Balance}}{10,000}$$|Strategy Score is capped by the 7d average balance of the equity (wallet) balance to prevent small wallet and trade samples to have an outsized ranking impact vs the entire subnet population. |
-|AUM Adjustment Factor|$$\text{Strategy Score} \cdot \text {(1+} \ln( \sqrt{ \max{(1, \frac{\text{AUM}}{100,000}})}$$|Scaling factor to adjustment for rising difficulties of managing a larger AUM portfolio.|
-|Measurement_Day|Current day|Current day|
-|Inception_Date|1st day for users to enter contest|Starts tracking|
-|Balance_DayStart|Wallet balance at start of day|Starting principal|
-|Net_Inflows|Net change in inflows on the wallet|To account for any inflows during the day|
-|Daily $ Return|PNL made during the day (in USDT)|Actual PNL made|
-|Balance_DayEnd| $$Sum(Balance\\_DayStart, Net\\_Inflows, Daily \\$ Return)$$ | Total wallet balance at end of day|
-|LTD|$$\le90\text{ days}$$|Life to date records of the strategy.  Currently capped at 90 days.|
