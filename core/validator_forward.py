@@ -58,7 +58,6 @@ async def forward(validator):
 
     for idx, (uid, response, reward) in enumerate(zip(miner_uids, all_responses, rewards)):
         try:
-            # rewards[idx] = 100.0
             logger.info(f"uid: {uid}, coldkey:{validator.metagraph.axons[uid].coldkey[:10]}, "
                         f"response: {response}, reward: {rewards[idx]}")
         except Exception as e:
@@ -75,6 +74,6 @@ async def forward(validator):
                                 f"{json.loads(response.get('value').get('rawData')).get('strategyId')[-4:]}, "
                                 f"reward: {reward:.2f}, percentage: {reward_percentage:.2f}%\n")
             except Exception as e:
-                logger.error(f"Error in logging: {e}")
+                logger.error(f"Error in logging: {e}, uid: {uid}, response: {response}, reward: {reward}")
     logger.info(log_str)
     validator.update_scores(rewards, miner_uids)
