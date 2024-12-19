@@ -1,4 +1,5 @@
 Last Updated: December 12th, 2024
+
 Introduction: Showcase your trading strategies! Strategies that consistently deliver profits with minimal drawdowns will be eligible for substantial airdrops!
 
 ## Summary Flowchart
