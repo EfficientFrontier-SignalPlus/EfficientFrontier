@@ -50,7 +50,7 @@ def read_latest_success_set_weights_datetime_str():
     try:
         timestamp = read_latest_success_set_weights_timestamp()
         if timestamp is None:
-            return None
+            return 'none datetime_str'
 
         dt_utc = datetime.fromtimestamp(timestamp, tz=timezone.utc)
 
