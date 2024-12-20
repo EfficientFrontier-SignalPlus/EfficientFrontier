@@ -166,10 +166,12 @@ class BaseNeuron(ABC):
         # Don't set weights on initialization.
         logger.info(f"should_set_weights(): {self.config.neuron.disable_set_weights}")
         if self.step == 0:
+            logger.info(f"should_set_weights(): Skipping set weights on initialization.")
             return False
 
         # Check if enough epoch blocks have elapsed since the last epoch.
         if self.config.neuron.disable_set_weights:
+            logger.info(f"should_set_weights(): Skipping set weights due to disable_set_weights.")
             return False
 
         # Define appropriate logic for when set weights.
