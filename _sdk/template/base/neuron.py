@@ -164,6 +164,7 @@ class BaseNeuron(ABC):
 
     def should_set_weights(self) -> bool:
         # Don't set weights on initialization.
+        logger.info(f"should_set_weights(): {self.config.neuron.disable_set_weights}")
         if self.step == 0:
             return False
 
