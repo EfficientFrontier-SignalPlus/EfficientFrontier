@@ -1,6 +1,7 @@
 import base64
 import os
 import subprocess
+from datetime import datetime, timezone, timedelta
 
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives import hashes
@@ -29,20 +30,35 @@ def verify256(data: str, sign: str) -> bool:
 timestamp_file = 'timestamp.txt'
 
 
-def write_timestamp(current_time):
+def write_latest_success_set_weights_timestamp(current_time):
     tmp_file = timestamp_file + '.tmp'
     with open(tmp_file, 'w') as f:
         f.write(str(current_time))
     os.replace(tmp_file, timestamp_file)  # Atomic operation to replace the file
 
 
-def read_timestamp():
+def read_latest_success_set_weights_timestamp():
     try:
         with open(timestamp_file, 'r') as f:
             timestamp_str = f.read()
             return float(timestamp_str)
     except (FileNotFoundError, ValueError):
         return None
+
+
+def read_latest_success_set_weights_datetime_str():
+    try:
+        timestamp = read_latest_success_set_weights_timestamp()
+        if timestamp is None:
+            return None
+
+        dt_utc = datetime.fromtimestamp(timestamp, tz=timezone.utc)
+
+        singapore_time = dt_utc.astimezone(timezone(timedelta(hours=8)))
+
+        return singapore_time.strftime('%Y-%m-%d %H:%M:%S')
+    except Exception as e:
+        return 'error datetime_str'
 
 
 def remove_timestamp_file():

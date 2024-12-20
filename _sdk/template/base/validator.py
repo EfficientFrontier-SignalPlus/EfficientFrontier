@@ -35,7 +35,7 @@ from _sdk.template.base.utils.weight_utils import (
     convert_weights_and_uids_for_emit,
 )
 from _sdk.template.utils.config import add_validator_args
-from core.utils import write_timestamp
+from core.utils import write_latest_success_set_weights_timestamp
 from core.env_setting.env_utils import get_env_setting
 from loguru import logger
 
@@ -294,7 +294,7 @@ class BaseValidatorNeuron(BaseNeuron):
                 version_key=self.spec_version,
             )
             if result is True:
-                write_timestamp(time.time())
+                write_latest_success_set_weights_timestamp(time.time())
                 print(f"updated timestamp to {time.time()}")
                 logger.info(f"set_weights on chain successfully! msg: {msg}")
             else:

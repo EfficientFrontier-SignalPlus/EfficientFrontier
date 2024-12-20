@@ -1,7 +1,7 @@
 from multiprocessing import Process
 import time
 from loguru import logger
-from core.utils import read_timestamp, write_timestamp, remove_timestamp_file
+from core.utils import read_latest_success_set_weights_timestamp, write_latest_success_set_weights_timestamp, remove_timestamp_file
 from _sdk.neurons.validator import Validator
 
 
@@ -20,13 +20,13 @@ if __name__ == "__main__":
 
 
     # Initialize the timestamp file with current time
-    write_timestamp(time.time())
+    write_latest_success_set_weights_timestamp(time.time())
 
     p = start_foo()
 
     try:
         while True:
-            timestamp = read_timestamp()
+            timestamp = read_latest_success_set_weights_timestamp()
             if timestamp is not None:
                 now = time.time()
                 elapsed = round(now - timestamp, 0)
@@ -37,7 +37,7 @@ if __name__ == "__main__":
                     p.terminate()
                     p.join()
                     # Reset timestamp
-                    write_timestamp(time.time())
+                    write_latest_success_set_weights_timestamp(time.time())
                     p = start_foo()
             else:
                 logger.info("Failed to read timestamp")

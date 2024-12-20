@@ -21,7 +21,7 @@ from bittensor import logging
 
 from core.env_setting.env_utils import get_env_setting
 from core.protocol import EFProtocol
-from core.utils import get_current_commit_hash, read_timestamp
+from core.utils import get_current_commit_hash, read_latest_success_set_weights_datetime_str
 from core.validator_reward import get_rewards
 from _sdk.template.utils.uids import get_random_uids
 from loguru import logger
@@ -46,7 +46,7 @@ async def forward(validator):
             synapse=EFProtocol(input={'validator_uid': validator.uid,
                                       'validator_version': get_env_setting().validator_version,
                                       'validator_git_hash': get_current_commit_hash()[:7],
-                                      'last_set_weights_success_time': read_timestamp()
+                                      'last_set_weights_success_time': read_latest_success_set_weights_datetime_str()
                                       }),
             deserialize=True,
         )
