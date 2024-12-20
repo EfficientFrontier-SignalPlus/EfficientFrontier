@@ -176,10 +176,10 @@ class BaseNeuron(ABC):
             return False
 
         if (self.block - self.metagraph.last_update[self.uid]) > self.config.neuron.epoch_length:
-            logger.info(f"Setting weights for {self.neuron_type} at block {self.block}")
+            logger.info(f"should_set_weights(): Setting weights for {self.neuron_type} at block {self.block}")
             return True
         else:
-            logger.info(f'Waiting for Block: {self.block} - last_update: {self.metagraph.last_update[self.uid]} = '
+            logger.info(f'should_set_weights(): Waiting for Block: {self.block} - last_update: {self.metagraph.last_update[self.uid]} = '
                         f'{(self.block - self.metagraph.last_update[self.uid])}, '
                         f'which needs to exceed epoch_length of {self.config.neuron.epoch_length}.')
             return False
