@@ -2,7 +2,7 @@ import argparse
 import os
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--env", type=str, help="running environment", default=None)
+parser.add_argument("--env", type=str, help="running environment", required=True)
 args, _ = parser.parse_known_args()
 env = args.env
 
