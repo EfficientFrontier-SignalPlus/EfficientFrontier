@@ -39,6 +39,7 @@ from core.utils import write_latest_success_set_weights_timestamp
 from core.env_setting.env_utils import get_env_setting
 from loguru import logger
 
+
 class BaseValidatorNeuron(BaseNeuron):
     """
     Base class for Bittensor validators. Your validator should inherit from this class.
@@ -144,21 +145,18 @@ class BaseValidatorNeuron(BaseNeuron):
         try:
             while True:
                 try:
-                    # logger.info(f"debug 1")
-                    self.loop.run_until_complete(self.concurrent_forward())
+                    if self.should_set_weights():
+                        self.loop.run_until_complete(self.concurrent_forward())
 
-                    # logger.info(f"debug 2")
-                    # Check if we should exit.
-                    if self.should_exit:
-                        return
+                        if self.should_exit:
+                            return
 
-                    try:
-                        # logger.info(f"debug 3")
-                        self.sync()
-                    except Exception as e:
-                        logger.error(f"Failed to sync with exception: {e}")
-                    # logger.info(f"debug 4")
-                    self.step += 1
+                        try:
+                            self.sync()
+                        except Exception as e:
+                            logger.error(f"Failed to sync with exception: {e}")
+
+                        self.step += 1
                 except Exception as e:
                     logger.error(f"Failed to run forward with exception: {e}")
                     time.sleep(60)
