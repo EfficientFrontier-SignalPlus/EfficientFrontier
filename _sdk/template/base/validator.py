@@ -294,7 +294,9 @@ class BaseValidatorNeuron(BaseNeuron):
             if result is True:
                 write_latest_success_set_weights_timestamp(time.time())
                 print(f"updated timestamp to {time.time()}")
-                logger.info(f"set_weights on chain successfully! msg: {msg}")
+                sleep_minutes = 5
+                logger.info(f"set_weights on chain successfully! msg: {msg}, sleep for {sleep_minutes} minutes")
+                time.sleep(60 * sleep_minutes)
             else:
                 logger.error(f"set_weights on chain failed {msg}")
         except Exception as e:
