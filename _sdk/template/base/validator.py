@@ -156,7 +156,7 @@ class BaseValidatorNeuron(BaseNeuron):
                         except Exception as e:
                             logger.error(f"Failed to sync with exception: {e}")
 
-                        self.step += 1
+                    self.step += 1
                 except Exception as e:
                     logger.error(f"Failed to run forward with exception: {e}")
                     time.sleep(60)
