@@ -31,7 +31,7 @@ async def forward(validator):
     num_uids = 256
     batch_size = 5
     miner_uids = get_random_uids(validator, k=num_uids)
-    logger.info(f"forward miner uids: {miner_uids}")
+    logger.info(f"forward miner uids:\n{miner_uids}")
 
     all_responses = []
     for i in range(0, num_uids, batch_size):
@@ -80,5 +80,11 @@ async def forward(validator):
                                 f"percentage: {reward_percentage:.2f}%, total_reward: {round(total_reward,2)}\n")
             except Exception as e:
                 logger.error(f"Error in logging: {e}, uid: {uid}, response: {response}, reward: {reward}")
+        log_str+=f'count of non-zero rewards: {len([r for r in rewards if r != 0])}\n'
+        log_str += 'reward sorted:\n'
+        for reward in sorted(rewards, reverse=True):
+            if reward != 0:
+                reward_percentage = (reward / total_reward) * 100
+                log_str += f"reward: {reward:.4f}, percentage: {reward_percentage:.2f}%, total_reward: {round(total_reward,2)}\n"
         logger.info(log_str)
     validator.update_scores(rewards, miner_uids)
