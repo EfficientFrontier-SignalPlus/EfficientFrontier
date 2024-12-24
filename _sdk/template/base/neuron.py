@@ -156,10 +156,7 @@ class BaseNeuron(ABC):
         Check if enough epoch blocks have elapsed since the last checkpoint to sync.
         """
         last_update = self.metagraph.last_update[self.uid]
-        diff = self.block - last_update
         epoch_length = self.config.neuron.epoch_length
-        # logger.info(f'self.uid, {self.uid}, should_sync_metagraph, '
-        #                 f'self.block: {self.block} - last_update: {last_update} = {diff} need > epoch_length {epoch_length}, last_update: {self.metagraph.last_update}')
         return (self.block - last_update) > epoch_length
 
     def should_set_weights(self) -> bool:
@@ -178,10 +175,13 @@ class BaseNeuron(ABC):
             return False
 
         if (self.block - self.metagraph.last_update[self.uid]) > self.config.neuron.epoch_length:
-            logger.info(f"should_set_weights(): Setting weights for {self.neuron_type} at block {self.block}")
+            logger.info(f"should_set_weights(): Setting weights for {self.neuron_type} at block {self.block}, "
+                        f"self.block {self.block} - last_update {self.metagraph.last_update[self.uid]} > "
+                        f"epoch_length {self.config.neuron.epoch_length}.")
             return True
         else:
-            logger.info(f'should_set_weights(): Waiting for Block: {self.block} - last_update: {self.metagraph.last_update[self.uid]} = '
+            logger.info(f'should_set_weights(): '
+                        f'Waiting for Block: {self.block} - last_update: {self.metagraph.last_update[self.uid]} = '
                         f'{(self.block - self.metagraph.last_update[self.uid])}, '
                         f'which needs to exceed epoch_length of {self.config.neuron.epoch_length}.')
             return False

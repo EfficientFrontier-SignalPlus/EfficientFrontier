@@ -145,6 +145,9 @@ class BaseValidatorNeuron(BaseNeuron):
         try:
             while True:
                 try:
+                    if self.should_sync_metagraph():
+                        self.resync_metagraph()
+
                     if self.should_set_weights():
                         self.loop.run_until_complete(self.concurrent_forward())
 
@@ -294,7 +297,7 @@ class BaseValidatorNeuron(BaseNeuron):
             if result is True:
                 write_latest_success_set_weights_timestamp(time.time())
                 print(f"updated timestamp to {time.time()}")
-                sleep_minutes = 5
+                sleep_minutes = 10
                 logger.info(f"set_weights on chain successfully! msg: {msg}, sleep for {sleep_minutes} minutes")
                 time.sleep(60 * sleep_minutes)
             else:
