@@ -71,12 +71,13 @@ async def forward(validator):
                     try:
                         raw_date = json.loads(response.get('value').get('rawData'))
                     except Exception as e:
-                        break
+                        logger.warning(f'Error in parsing raw data(uid {uid}): {e}, response: {response}')
+                        continue
                     reward_percentage = (reward / total_reward) * 100
                     log_str += (f"uid: {uid}, coldkey: {validator.metagraph.axons[uid].coldkey[:4]}, "
-                                f"strategyId: "
-                                f"{raw_date.get('strategyId')[-4:]}, "
-                                f"reward: {reward:.2f}, percentage: {reward_percentage:.2f}%\n")
+                                f"strategyId: {raw_date.get('strategyId')[-4:]}, "
+                                f"reward: {reward:.2f}, "
+                                f"percentage: {reward_percentage:.2f}%, total_reward: {total_reward}\n")
             except Exception as e:
                 logger.error(f"Error in logging: {e}, uid: {uid}, response: {response}, reward: {reward}")
         logger.info(log_str)
