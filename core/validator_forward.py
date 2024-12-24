@@ -62,29 +62,56 @@ async def forward(validator):
                         f"response: {response}, reward: {rewards[idx]}")
         except Exception as e:
             logger.error(f"Error in logging: {e}")
-    log_str = '\n'
-    total_reward = sum(rewards)
-    if total_reward != 0:
-        for uid, response, reward in zip(miner_uids, all_responses, rewards):
-            try:
-                if reward != 0:
-                    try:
-                        raw_date = json.loads(response.get('value').get('rawData'))
-                    except Exception as e:
-                        logger.warning(f'Error in parsing raw data(uid {uid}): {e}, response: {response}')
-                        continue
+
+    try:
+        total_reward = sum(rewards)
+        if total_reward != 0:
+            data_list = []
+            for uid, response, reward in zip(miner_uids, all_responses, rewards):
+                if reward == 0:
+                    continue
+                try:
+                    raw_data_str = response.get('value', {}).get('rawData', '{}')
+                    raw_data = json.loads(raw_data_str)
                     reward_percentage = (reward / total_reward) * 100
-                    log_str += (f"uid: {uid}, coldkey: {validator.metagraph.axons[uid].coldkey[:4]}, "
-                                f"strategyId: {raw_date.get('strategyId')[-4:]}, "
-                                f"reward: {reward:.4f}, "
-                                f"percentage: {reward_percentage:.2f}%, total_reward: {round(total_reward,2)}\n")
-            except Exception as e:
-                logger.error(f"Error in logging: {e}, uid: {uid}, response: {response}, reward: {reward}")
-        log_str+=f'count of non-zero rewards: {len([r for r in rewards if r != 0])}\n'
-        log_str += 'reward sorted:\n'
-        for reward in sorted(rewards, reverse=True):
-            if reward != 0:
-                reward_percentage = (reward / total_reward) * 100
-                log_str += f"reward: {reward:.4f}, percentage: {reward_percentage:.2f}%, total_reward: {round(total_reward,2)}\n"
-        logger.info(log_str)
+
+                    data_list.append({
+                        'uid': uid,
+                        'coldkey': validator.metagraph.axons[uid].coldkey[:4],
+                        'strategy_id': (raw_data.get('strategyId') or '')[-4:],
+                        'reward': reward,
+                        'reward_percentage': reward_percentage
+                    })
+                except Exception as e:
+                    logger.warning(
+                        f'Error parsing rawData (uid={uid}): {e}, response: {response}'
+                    )
+
+            log_lines = []
+            for item in data_list:
+                log_lines.append(
+                    f"uid: {item['uid']}, coldkey: {item['coldkey']}, "
+                    f"strategyId: {item['strategy_id']}, "
+                    f"reward: {item['reward']:.4f}, "
+                    f"percentage: {item['reward_percentage']:.2f}%, "
+                    f"total_reward: {round(total_reward, 2)}"
+                )
+
+            log_lines.append(f"count of non-zero rewards: {len(data_list)}")
+            log_lines.append("reward sorted:")
+
+            data_list_sorted = sorted(data_list, key=lambda x: x['reward'], reverse=True)
+            for item in data_list_sorted:
+                log_lines.append(
+                    f"uid: {item['uid']}, coldkey: {item['coldkey']}, "
+                    f"strategyId: {item['strategy_id']}, "
+                    f"reward: {item['reward']:.4f}, "
+                    f"percentage: {item['reward_percentage']:.2f}%, "
+                    f"total_reward: {round(total_reward, 2)}"
+                )
+
+            log_str = "\n".join(log_lines)
+            logger.info("\n" + log_str)
+    except Exception as e:
+        logger.error(f"Error in logging: {e}")
     validator.update_scores(rewards, miner_uids)
