@@ -152,6 +152,8 @@
    
     To qualify for the daily scoring, each miner must meet a minimum adjusted trading volume of 5,000 USDT on each rolling 7-day trading period.  The adjusted volume is defined as follows across the different instruments:
 
+    The purpose of this provision is to encourage trading; actions that solely focus on inflating volume without legitimate transactions may be subject to penalties.
+
     Options:
     - Adjusted Volume = Option Premium
    
