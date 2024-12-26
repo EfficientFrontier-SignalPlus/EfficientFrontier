@@ -52,6 +52,11 @@ class DayDetailDTO(BaseModel):
         ex = (measurement_day - self.day(inception_time)) * -decayRatio
         return math.exp(ex * lambda_value)
 
+    def cap_return_ratio(self, measure_time: float) -> float:
+        daily_max_return_ratio = min((0.01 / 40000) * (self.equityStart - 10000) + 0.08, 0.12)
+        return min(self.return_ratio, daily_max_return_ratio * 2) if (measure_time == self.endTime) else min(
+            self.return_ratio, daily_max_return_ratio)
+
     def day(self, inception_time: int) -> int:
         diff = self.endTime - inception_time
         if diff % ONE_DAY_MS != 0:
@@ -113,7 +118,7 @@ class ScoreModel(BaseModel):
     def calculate_exponentially_weighed_daily_returns(self) -> float:
         numerator = sum(
             item.day_weight(lambda_value=self.lambdaValue, measure_time=self.measureTime,
-                            inception_time=self.inceptionTime) * item.return_ratio
+                            inception_time=self.inceptionTime) * item.cap_return_ratio(measure_time=self.measureTime)
             for item in self.sorted_list
         )
         denominator = sum(
