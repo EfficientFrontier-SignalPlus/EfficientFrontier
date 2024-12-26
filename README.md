@@ -152,6 +152,8 @@
    
     To qualify for the daily scoring, each miner must meet a minimum adjusted trading volume of 5,000 USDT on each rolling 7-day trading period.  The adjusted volume is defined as follows across the different instruments:
 
+    The purpose of this provision is to encourage trading; actions that solely focus on inflating volume without legitimate transactions may be subject to penalties.
+
     Options:
     - Adjusted Volume = Option Premium
    
@@ -191,14 +193,16 @@
    
     Any suspicious activities identified through automated checks or manual reviews will result in penalties. A manual zero-score penalty may be applied.
 
-   1. Rule 1 - Price Deviation Checks: For option instruments specifically, a significant deviation between the transaction price and the mark price will result in a penalty.
+   Rule 1 - Price Deviation Checks: For option instruments specifically, a significant deviation between the transaction price and the mark price will result in a penalty.
 
-   2. Rule 2 - Unusual Trading Patterns: Engaging in irregular trading behaviors, such as using duplicate or identical portfolios to claim multiple airdrops for the same strategy, artificially inflating trading volume, or conducting circular trades between accounts, etc.,  will result in disqualification from receiving airdrop rewards. These activities will also trigger automated alerts for further investigation.
+   Rule 2 - Unusual Trading Patterns: Engaging in irregular trading behaviors, such as using duplicate or identical portfolios to claim multiple airdrops for the same strategy, artificially inflating trading volume, or conducting circular trades between accounts, etc.,  will result in disqualification from receiving airdrop rewards. These activities will also trigger automated alerts for further investigation.
 
-   3. Rule 3 - Profit Threshold Violations: Any potential wash trading or malicious wash trading aimed at generating profits will be detected and prohibited, including activities such as disproportionately exploiting price spreads, etc.
+   Rule 3 - Profit Threshold Violations: Any potential wash trading or malicious wash trading aimed at generating profits will be detected and prohibited, including activities such as disproportionately exploiting price spreads, etc.
   
-   4. Rule 4: Please refrain from using inappropriate or offensive words as strategy names or trader handles, as such actions will result in penalties.
+   Rule 4: Please refrain from using inappropriate or offensive words as strategy names or trader handles, as such actions will result in penalties.
 
+   Rule 5: We do not encourage trading options with a mark price below 4 basis points, as it may be deemed a wash trade.
+    
 ### 🏅 Rankings and Rewards Distribution
 - Daily Rankings: Strategies are ranked based on their daily scores from the scoring formula, with higher scores leading to better sequential rankings.
 - Reward Distribution: 
