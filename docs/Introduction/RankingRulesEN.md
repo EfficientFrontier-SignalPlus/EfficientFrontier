@@ -69,7 +69,13 @@ $$\text{Strategy Score = } \frac {\text{Weighted Daily \\% Returns}}{\text{Maxim
 
     The Daily % Return is calculated by dividing the Daily Return by the average balance for the day, adjusting for any deposits or withdrawals. This represents the daily percentage return of the strategy.
 
-        %_Return = $_Return / Avg(Balance_DayStart, Balance_DayStart+Net_Inflows)
+      $$\text{Return\\%=}\frac {\text{Return\\$}}{\text{Avg}(\text{Balance Day End},\text{Balance Day Start+Net Inflows})}$$
+
+   The daily return will be limited to twice the maximum return on the inception date, and to the maximum return on all other days. The maximum return is calculated as follows:
+
+$$\text{Max Return}\=\min\left(\frac{1\\%\cdot(\text{Balance Day Start}-10000)}{40000}+8\\%,12\\%\right)+|14\text{Days Drawdown}|$$
+   
+$$\text{Daily \\% Return}=\begin{cases}\min(\text{Return\\%}, 2\cdot\text{Max Return}), & \text{at inception date}\\\min(\text{Return\\%}, \text{Max Return}), & \text{other dates}\\ \end{cases}$$
 
 3. Weighted Historical Performance
 
