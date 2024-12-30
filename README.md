@@ -157,19 +157,21 @@ $$\text{Daily \\% Return}=\begin{cases}\min(\text{Return\\%}, 2\cdot\text{Max Re
 
 2. Minimum Trading Volume Requirement
    
-    To qualify for the daily scoring, each miner must meet a minimum adjusted trading volume of 5,000 USDT on each rolling 7-day trading period.  The adjusted volume is defined as follows across the different instruments:
+   - To qualify for the daily scoring, each miner must meet a minimum adjusted trading volume of 5,000 USDT on each rolling 7-day trading period.  The adjusted volume is defined as follows across the different instruments:
 
-    The purpose of this provision is to encourage trading; actions that solely focus on inflating volume without legitimate transactions may be subject to penalties.
+       The purpose of this provision is to encourage trading; actions that solely focus on inflating volume without legitimate transactions may be subject to penalties.
 
-    Options:
-    - Adjusted Volume = Option Premium
+       Options:
+       - Adjusted Volume = Option Premium
    
-    Futures and Spot:
-    - Adjusted Volume = Order Quantity × Order Price × Coin Ratio
-    - Coin Ratio: Varies by cryptocurrency and is based on the initial margin rates. For specific Coin Ratios, please refer to the [OKX Margin Rates](https://www.okx.com/trade-market/position/swap) page.
+       Futures and Spot:
+       - Adjusted Volume = Order Quantity × Order Price × Coin Ratio
+       - Coin Ratio: Varies by cryptocurrency and is based on the initial margin rates. For specific Coin Ratios, please refer to the [OKX Margin Rates](https://www.okx.com/trade-market/position/swap) page.
   
-    Rationale: to require some minimal level of participation from traders to suggest that the trading strategy is still relevant.
+       Rationale: to require some minimal level of participation from traders to suggest that the trading strategy is still relevant.
 
+   - Increase the requirement for Daily Trading Volume. The daily trade volume must be ten times the average USD value of TAO claimed by the strategy over the past 7 days. If this volume is not reached, that day is considered ineligible. (Trade volume will no longer include any option trades with a markPrice > 0.2 index)
+   
 3. Net Withdrawal Restriction
    
     Strategies cannot have net withdrawal of capital (ie. Outflows > Inflows) on each trading day in order to qualify for return calculations. Any net withdrawals of capital from a strategy will result in a zero-score calculation against any positive performance on the day.
