@@ -209,7 +209,14 @@ $$\text{Daily \\% Return}=\begin{cases}\min(\text{Return\\%}, 2\cdot\text{Max Re
    Rule 4: Please refrain from using inappropriate or offensive words as strategy names or trader handles, as such actions will result in penalties.
 
    Rule 5: We do not encourage trading options with a mark price below 4 basis points, as it may be deemed a wash trade.
-    
+
+
+7. Note: Situations that may result in account suspension:
+
+   - When equity becomes 0
+   - When the API fails
+   - Cheating    
+   
 ### 🏅 Rankings and Rewards Distribution
 - Daily Rankings: Strategies are ranked based on their daily scores from the scoring formula, with higher scores leading to better sequential rankings.
 - Reward Distribution: 
