@@ -46,7 +46,7 @@ $$\text{Strategy Score = } \frac {\text{Weighted Daily \\% Returns}}{\text{Maxim
        - Options: Volume = Option Premiums
        - Futures and Spot: Volume = Order Quantity × Order Price × Token Ratio (based on cryptocurrency type and initial margin rates; see [OKX Margin Rates](https://www.okx.com/trade-market/position/swap) for details).
        - The purpose of this provision is to encourage trading; actions that solely focus on inflating volume without legitimate transactions may be subject to penalties.
-     - Increase the requirement for Daily Trading Volume. The daily trade volume must be ten times the average USD value of TAO claimed by the strategy over the past 7 days. If this volume is not reached, that day is considered ineligible. (Trade volume will no longer include any option trades with a markPrice > 0.2 index)
+     - (Starting from 2024-12-30 08:00:01 UTC) Increase the requirement for Daily Trading Volume. The daily trade volume must be ten times the average USD value of TAO claimed by the strategy over the past 7 days. If this volume is not reached, that day is considered ineligible. (Trade volume will no longer include any option trades with a markPrice > 0.2 index)
   3. Net Withdrawal Restriction: No net outflows (withdrawals > deposits) are allowed during the trading day.
   4. Whitelisted Assets: Only trades involving the following assets or their derivatives (spot, futures, options) will count toward scores:
      - BTC, ETH, SOL

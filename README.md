@@ -170,7 +170,7 @@ $$\text{Daily \\% Return}=\begin{cases}\min(\text{Return\\%}, 2\cdot\text{Max Re
   
        Rationale: to require some minimal level of participation from traders to suggest that the trading strategy is still relevant.
 
-   - Increase the requirement for Daily Trading Volume. The daily trade volume must be ten times the average USD value of TAO claimed by the strategy over the past 7 days. If this volume is not reached, that day is considered ineligible. (Trade volume will no longer include any option trades with a markPrice > 0.2 index)
+   - (Starting from 2024-12-30 08:00:01 UTC) Increase the requirement for Daily Trading Volume. The daily trade volume must be ten times the average USD value of TAO claimed by the strategy over the past 7 days. If this volume is not reached, that day is considered ineligible. (Trade volume will no longer include any option trades with a markPrice > 0.2 index)
    
 3. Net Withdrawal Restriction
    
