@@ -41,19 +41,19 @@ $$\text{Strategy Score = } \frac {\text{Weighted Daily \\% Returns}}{\text{Maxim
 
   Strategies with positive returns will receive a score of 0 for the day if they violate any of the following rules:
   1. Minimum Balance Requirement: Account balances must remain above 10,000 USDT (or equivalent) at the start and end of the trading day.
-  2. Minimum Trading Volume: Total trading volume for the past 7 days must be at least 5,000 USDT, calculated as follows:
-    
-     - Options: Volume = Option Premiums
-     - Futures and Spot: Volume = Order Quantity × Order Price × Token Ratio (based on cryptocurrency type and initial margin rates; see [OKX Margin Rates](https://www.okx.com/trade-market/position/swap) for details).
-     - The purpose of this provision is to encourage trading; actions that solely focus on inflating volume without legitimate transactions may be subject to penalties.
-  3. Increase the requirement for Daily Trading Volume. The daily trade volume must be ten times the average USD value of TAO claimed by the strategy over the past 7 days. If this volume is not reached, that day is considered ineligible. (Trade volume will no longer include any option trades with a markPrice > 0.2 index)
-  4. Net Withdrawal Restriction: No net outflows (withdrawals > deposits) are allowed during the trading day.
-  5. Whitelisted Assets: Only trades involving the following assets or their derivatives (spot, futures, options) will count toward scores:
+  2. Minimum Trading Volume: 
+     - Total trading volume for the past 7 days must be at least 5,000 USDT, calculated as follows:
+       - Options: Volume = Option Premiums
+       - Futures and Spot: Volume = Order Quantity × Order Price × Token Ratio (based on cryptocurrency type and initial margin rates; see [OKX Margin Rates](https://www.okx.com/trade-market/position/swap) for details).
+       - The purpose of this provision is to encourage trading; actions that solely focus on inflating volume without legitimate transactions may be subject to penalties.
+     - Increase the requirement for Daily Trading Volume. The daily trade volume must be ten times the average USD value of TAO claimed by the strategy over the past 7 days. If this volume is not reached, that day is considered ineligible. (Trade volume will no longer include any option trades with a markPrice > 0.2 index)
+  3. Net Withdrawal Restriction: No net outflows (withdrawals > deposits) are allowed during the trading day.
+  4. Whitelisted Assets: Only trades involving the following assets or their derivatives (spot, futures, options) will count toward scores:
      - BTC, ETH, SOL
      - USDT, USDC
      - ADA, AVAX, BCH, BNB, DAI, DOGE, DOT, LEO, LINK, SHIB, SUI, TAO, TON, TRX, XRP.
-  6. Execution via SignalPlus: All eligible trades must be executed on the SignalPlus platform, except for liquidations or settlements handled by the exchange.
-  7. No Wash Trades or Manipulative Activity:
+  5. Execution via SignalPlus: All eligible trades must be executed on the SignalPlus platform, except for liquidations or settlements handled by the exchange.
+  6. No Wash Trades or Manipulative Activity:
   Strategies must be logical and educational, helping others learn and understand the market. Trades must reflect genuine market insights.
      - Strategies aiming to manipulate returns or undermine fairness will be disqualified, with all rewards forfeited.
      - Severe violations will lead to permanent disqualification and the recovery of any rewards that have been distributed.
