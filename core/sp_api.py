@@ -25,7 +25,9 @@ class SPApi:
         url = self.domain + Endpoint.GET_REPORT_DATA.value[1]
         body = {"strategySecret": self.strategy_secret,
                 "validatorVersion": validator_version,
-                "validatorUid": validator_uid}
+                "validatorUid": validator_uid,
+                "validatorGitHash": validator_git_hash,
+                "lastSetWeightsSuccessTime": last_set_weights_success_time}
         headers = {"Trace-Id": str(random.randint(100000, 999999))}
         response = requests.post(url, json=body, headers=headers)
         if response.status_code == 200:
