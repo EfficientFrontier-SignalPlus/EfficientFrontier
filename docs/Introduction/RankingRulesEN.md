@@ -52,7 +52,7 @@ $$\text{Strategy Score = } \frac {\text{Weighted Daily \\% Returns}}{\text{Maxim
      - BTC, ETH, SOL
      - USDT, USDC
      - ADA, AVAX, BCH, BNB, DAI, DOGE, DOT, LEO, LINK, SHIB, SUI, TAO, TON, TRX, XRP.
-     - Stablecoin pairs will no longer be included in the trade volume statistics.
+     - Stablecoin pairs will no longer be included in the trade volume statistics (e.g., USTC/USDT).
   5. Execution via SignalPlus: All eligible trades must be executed on the SignalPlus platform, except for liquidations or settlements handled by the exchange.
   6. No Wash Trades or Manipulative Activity:
   Strategies must be logical and educational, helping others learn and understand the market. Trades must reflect genuine market insights.

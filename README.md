@@ -184,7 +184,7 @@ $$\text{Daily \\% Return}=\begin{cases}\min(\text{Return\\%}, 2\cdot\text{Max Re
      - BTC, ETH, SOL
      - USDT, USDC
      - ADA, AVAX, BCH, BNB, DAI, DOGE, DOT, LEO, LINK, SHIB, SUI, TAO, TON, TRX, XRP.
-     - Stablecoin pairs will no longer be included in the trade volume statistics.
+     - Stablecoin pairs will no longer be included in the trade volume statistics (e.g., USTC/USDT).
 
      Trades involving any non-whitelisted assets or derivatives will result in a zero score for the day.
 
