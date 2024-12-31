@@ -174,7 +174,7 @@ class BaseNeuron(ABC):
         if self.neuron_type == "MinerNeuron":
             return False
 
-        if (self.block - self.metagraph.last_update[self.uid]) > self.config.neuron.epoch_length:
+        if (self.block - self.metagraph.last_update[self.uid]) >= self.config.neuron.epoch_length:
             logger.info(f"should_set_weights(): Setting weights for {self.neuron_type} at block {self.block}, "
                         f"self.block {self.block} - last_update {self.metagraph.last_update[self.uid]} > "
                         f"epoch_length {self.config.neuron.epoch_length}.")

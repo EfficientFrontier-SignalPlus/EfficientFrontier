@@ -46,13 +46,13 @@ class DayDetailDTO(BaseModel):
 
     def day_weight(self, lambda_value: float, measure_time: int, inception_time: int) -> float:
         decayRatio = math.log(0.2) / -14
-        if not self.qualified:
-            return 0.0
         measurement_day = (measure_time - inception_time) / ONE_DAY_MS
         ex = (measurement_day - self.day(inception_time)) * -decayRatio
         return math.exp(ex * lambda_value)
 
     def cap_return_ratio(self, measure_time: float, dd_14: float) -> float:
+        if self.return_ratio > 0 and not self.qualified:
+            return 0.0
         daily_max_return_ratio = min((0.01 / 40000) * (self.equityStart - 10000) + 0.08, 0.12) + abs(dd_14)
         return min(self.return_ratio, daily_max_return_ratio * 2) if (measure_time == self.endTime) else min(
             self.return_ratio, daily_max_return_ratio)
