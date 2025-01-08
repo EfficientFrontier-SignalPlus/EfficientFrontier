@@ -252,6 +252,28 @@ $$\text{Daily \\% Return}=\begin{cases}\min(\text{Return\\%}, 2\cdot\text{Max Re
 |Balance_DayEnd| $$Sum(Balance\\_DayStart, Net\\_Inflows, Daily \\$ Return)$$ | Total wallet balance at end of day|
 |LTD|$$\le90\text{ days}$$|Life to date records of the strategy.  Currently capped at 90 days.|
 
+## Account Suspensions
+
+We place heavy emphasis on preserving the authentic and genuine competitive spirit of our subnet miners, and will not tolerate duplicitous behaviour aimed towards gaming the system for rewards.  Our long-term mission is to provide institutional-grade trading data to power learning models for trading strategies and market signals, and the quality of outputs can only be as good as the quality of inputs.
+
+### Modus Operandi
+- Each 'Exchange Master Account' - defined as the exchange-KYC'ed account between the user and the CEX - can only deploy one single subnet strategy
+- Miners who wish to deploy multiple strategies must maintain a minimum equity balance of 100,000 USDT in each of the individual strategies, in addition to fulfilling the aforementioned trading volume requirement (5,000 USDT over a rolling 7-day period) also for each individual strategy.
+
+### Suspension Categories
+Subnet violators and perpetrators will be subject to suspension or bans with varying degrees of severity.
+
+1. Cheaters, Strategy Duplicators, Wash Traders, and Other Illicit Activities
+  - Immediate suspension and removal of violated strategy from ranking participation.
+  - Permanent ban on the miner's Exchange Master Account and all associated strategies.
+2. Inactive Miners / Loss of API Connection / Other Technical Disruptions
+  - Immediate suspension and removal of violated strategy from ranking participation.
+  - Additional 30-day lock-out on the miner's Exchange Master Account from creating a new strategy.
+3. Strategies Removed Due to Bittensor Miner Limits
+  - Bittensor subnets are subject to a hard 192 miner UID limit.
+  - Additional miner signups will result in the lowest rank miners being removed from participation.
+  - Miners who have been expelled under this circumstance can immediately sign up and create a new strategy without a lock-out restriction, under the same Exchange Master Account and after paying the requisite TAO registration fee.
+
 ## SignalPlus's Role
 
 Built by an exceptional team of former banking and technology veterans, the SignalPlus terminal is the industry's leading derivative trading and options risk management platform that is well recognized by crypto's largest players and exchanges.  With a professional suite of automated and industrial-grade tools available to all, we now have a ready-made platform and built-in measurement tools to power the Bittensor network.
