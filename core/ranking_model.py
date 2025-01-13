@@ -15,6 +15,7 @@ ONE_DAY_MS = 24 * 60 * 60 * 1000  # milliseconds in one day
 class ScoreResult:
     quit: bool
     score: float
+    max_score: float
     exponentiallyWeighedDailyReturns: float
     worst14dDrawDown: float
     worst30dDrawDown: float
@@ -41,8 +42,7 @@ class DayDetailDTO(BaseModel):
     @property
     def return_ratio(self) -> float:
         denominator = (self.equityStart + self.equityStart + self.netFlow) / 2
-        net_flow_return_ratio = self.day_pnl / denominator if denominator != 0 else 0.0
-        return min(net_flow_return_ratio, self.day_pnl / self.equityStart)
+        return self.day_pnl / denominator if denominator != 0 else 0.0
 
     def day_weight(self, lambda_value: float, measure_time: int, inception_time: int) -> float:
         decayRatio = math.log(0.2) / -14
@@ -50,14 +50,12 @@ class DayDetailDTO(BaseModel):
         ex = (measurement_day - self.day(inception_time)) * -decayRatio
         return math.exp(ex * lambda_value)
 
-    def calc_return_ratio(self) -> float:
+    def cap_return_ratio(self, measure_time: float, dd_14: float) -> float:
         if self.return_ratio > 0 and not self.qualified:
             return 0.0
-        return self.return_ratio
-
-    def aum_multiplier(self) -> float:
-        aum = min(self.equityStart, self.equityEnd)
-        return 1 + math.log(max(0.4, aum / 100_000))
+        daily_max_return_ratio = min((0.01 / 40000) * (self.equityStart - 10000) + 0.08, 0.12) + abs(dd_14)
+        return min(self.return_ratio, daily_max_return_ratio * 2) if (measure_time == self.endTime) else min(
+            self.return_ratio, daily_max_return_ratio)
 
     def day(self, inception_time: int) -> int:
         diff = self.endTime - inception_time
@@ -121,7 +119,7 @@ class ScoreModel(BaseModel):
         numerator = sum(
             item.day_weight(lambda_value=self.lambdaValue, measure_time=self.measureTime,
                             inception_time=self.inceptionTime) *
-            item.calc_return_ratio() * item.aum_multiplier()
+            item.cap_return_ratio(measure_time=self.measureTime, dd_14=self.worst14d_draw_down)
             for item in self.sorted_list
         )
         denominator = sum(
@@ -134,6 +132,12 @@ class ScoreModel(BaseModel):
     def is_sub_net_init(self) -> bool:
         current_time_ms = int(datetime.now().timestamp() * 1000)
         return (current_time_ms - self.subNetCreateTime) <= 14 * ONE_DAY_MS
+
+    def max_score(self) -> float:
+        record_list = [it for it in self.sorted_list if self.measureTime - it.endTime < 7 * 24 * 60 * 60 * 1000]
+        _list = [v.equityEnd - v.netFlow for v in record_list]
+        average = sum(_list) / len(_list)
+        return average * 0.0001
 
     def calculate_score(self) -> float:
         if self.is_sub_net_init():
@@ -165,7 +169,9 @@ class ScoreModel(BaseModel):
             else:
                 mmr_score = s
 
-            return mmr_score * 10
+            index_value_component = max(1.0, self.measure_day_detail.equityStart / 100_000)
+            final_score = mmr_score * (1 + math.log(math.sqrt(index_value_component))) * 10
+            return min(final_score, self.max_score())
 
     def get_result(self) -> ScoreResult:
         if not self.sorted_list and not self.is_sub_net_init:
@@ -189,6 +195,7 @@ class ScoreModel(BaseModel):
         return ScoreResult(
             quit=self.quit,
             score=self.calculate_score(),
+            max_score=self.max_score(),
             exponentiallyWeighedDailyReturns=self.calculate_exponentially_weighed_daily_returns(),
             worst14dDrawDown=self.worst14d_draw_down,
             worst30dDrawDown=self.worst30d_draw_down
