@@ -16,7 +16,7 @@
 # DEALINGS IN THE SOFTWARE.
 
 import copy
-
+from datetime import datetime, timezone
 import bittensor as bt
 import bittensor_wallet as bw
 from abc import ABC, abstractmethod
@@ -160,6 +160,11 @@ class BaseNeuron(ABC):
         return (self.block - last_update) > epoch_length
 
     def should_set_weights(self) -> bool:
+        def is_within_time_range(utc_now):
+            start_time = utc_now.replace(hour=8, minute=0, second=0, microsecond=0)
+            end_time = utc_now.replace(hour=8, minute=16, second=0, microsecond=0)
+            return start_time <= utc_now <= end_time
+
         # Don't set weights on initialization.
         if self.step == 0:
             logger.info(f"should_set_weights(): Skipping set weights on initialization.")
@@ -172,6 +177,10 @@ class BaseNeuron(ABC):
 
         # Define appropriate logic for when set weights.
         if self.neuron_type == "MinerNeuron":
+            return False
+
+        if is_within_time_range(datetime.now(timezone.utc)):
+            logger.info(f"should_set_weights(): Skipping set weights within time range.")
             return False
 
         if (self.block - self.metagraph.last_update[self.uid]) >= self.config.neuron.epoch_length:
