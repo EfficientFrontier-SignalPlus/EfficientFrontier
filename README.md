@@ -60,37 +60,27 @@
 
    - Daily Score Formula: 
 
-   $$\text{Strategy Score = } \frac {\text{Weighted Daily \% Returns}}{\text{Maximum Decayed Drawdown}} \cdot 10$$
-   
+   $$\text{Strategy Score = } \frac {\text{Weighted Daily \% Returns}}{\text{Maximum Decayed Drawdown}} \cdot \text{Risk Factor} \cdot 10$$
 
-1. Daily Return Calculation
+1. Daily $ Return Calculation
 
     At the end of each trading day, the platform will calculate the daily strategy PNL (in USDT). The return is derived by comparing the account balance at the start and end of the day, and adjusting for any deposits or withdrawals that might have occurred during the session.
 
-       $_Return  = Balance_DayEnd - Balance_DayStart - Net_Inflows
-
+   $$\text{Return\\$}=\text{Balance Day End} - \text{Balance Day Start} - \text{Net Inflows}$$
+   
 2. Daily % Return Calculation
 
-    The Daily % Return is calculated by dividing the Daily Return by the average balance for the day, adjusting for any deposits or withdrawals. This represents the daily percentage return of the strategy.
+    The Daily % Return is calculated by dividing the Daily Return by the average balance for the day, adjusting for any deposits or withdrawals. Furthermore, the daily return will be limited to twice the maximum return on the inception date, and to the maximum return on all other days. The maximum return is calculated as follows:
 
-      $$\text{Return\\%=}\frac {\text{Return\\$}}{\text{Avg}(\text{Balance Day End},\text{Balance Day Start+Net Inflows})}$$
+   Daily Return % = Min($ Return / Balance_DayStart, $ Return / Balance_DayEnd)
 
-   The daily return will be limited to twice the maximum return on the inception date, and to the maximum return on all other days. The maximum return is calculated as follows:
+3. Weighted Daily Returns
+  The performance of the strategy is exponentially weighted, giving more importance to recent results but still recognizing one's historical performance. Strategies that have performed better in the near term will receive higher scores.
+  $$\text{Weighted Daily Returns = }\\text{(Day1 \\% Return ⋅ Day1 Weight ⋅ Size Factor 1 + ... + DayN \\% Return ⋅ DayN Weight ⋅ Size Factor N)}$$
 
-$$\text{Max Return}\=\min\left(\frac{1\\%\cdot(\text{Balance Day Start}-10000)}{40000}+8\\%,12\\%\right)+|14\text{Days Drawdown}|$$
-   
-$$\text{Daily \\% Return}=\begin{cases}\min(\text{Return\\%}, 2\cdot\text{Max Return}), & \text{at inception date}\\\min(\text{Return\\%}, \text{Max Return}), & \text{other dates}\\ \end{cases}$$
-
+  $$\text{DayWeight} = \exp(-\lambda \cdot \text{Return Decay} \cdot \text {(Measurement Date - Inception Date}))$$
   
-3. Weighted Historical Performance
-
-    The performance of the strategy is exponentially weighted, giving more importance to recent results but still recognizing one's historical performance. Strategies that have performed better in the near term will receive higher scores.
-
-    $$\text{Weighted Daily Returns = } \frac{\text{CrossProduct(DayWeights * Daily \\% Returns)}}{\text{Sum(DayWeights)}}$$
-
-    $$\text{DayWeight} = \exp(-\lambda \cdot \text{Return Decay} \cdot \text {(Measurement Date - Inception Date}))$$
-
-    $$\text{Return Decay =} \exp(\frac{\ln(20\\%)}{\text{14 Days}})$$
+  $$\text{Return Decay =} \exp(\frac{\ln(20\%)}{\text{14 Days}})$$
 
 4. Trading Frequency (λ)
 
@@ -111,9 +101,10 @@ $$\text{Daily \\% Return}=\begin{cases}\min(\text{Return\\%}, 2\cdot\text{Max Re
 
     The system measures the largest peak-to-trough capital drawdown incurred by the strategy on a life-to-date basis, but adjusted by a separate Drawdown Decay factor. A smaller drawdown will have a considerable impact on the final ranking score, rewarding strategies with strong risk discipline that can avoid taking large losses over time.
 
-    $$\text{Min(Today's \\% Drawdown, (}\frac{\text{Trough Index Value}}{\text{Peak Index Value}}-1) \cdot \text{Drawdown Decay, -1\\%)}$$
+    $$\text {Maximum Decayed Drawdown = }\\
+\text{Min(Today's \\% Drawdown, (}\frac{\text{Trough Index Value}}{\text{Peak Index Value}}-1) \cdot \text{Drawdown Decay, -1\\%)}$$
 
-    $$\text{Drawdown Decay =} \exp(\frac{\ln(80\\%)}{\text{14 Days}})$$
+    $$\text{Drawdown Decay = } 0.5^{\frac{\text{(Measurement date - Maximum Drawdown Date)}}{30}}$$
 
 6. Excessive Risk Taking Adjustment
 
@@ -123,31 +114,33 @@ $$\text{Daily \\% Return}=\begin{cases}\min(\text{Return\\%}, 2\cdot\text{Max Re
       <img src="docs/Introduction/pics/ExcessiveRiskTakingAdjustment.png" alt="Excessive Risk Taking">
    </div>
 
-7. AUM / Wallet Size Adjustment Factor
+7. Wallet Size Adjustment (Size Factor)
 
     For strategies achieving the same performance (i.e., return rate、drawdown), a higher AUM / wallet size will result in a higher score. This reflects the exponentially higher difficulty of managing larger portfolios, rewarding high-AUM strategies with an added scaling factor.
     
    
-   $$\text {AUM Adjustment Factor = Strategy Score} \cdot \text {(1+} \ln( \sqrt{ \max{(1, \frac{\text{AUM}}{100,000}})}$$
-
+   $$\text {Size Adjustment Factor = } \text {(1+} \ln( \max{(0.4, \frac{\text{Min(Balance\\_DayStart, Balance\\_DayEnd)}}{100,000})}$$
+   
    <div style="display: flex; flex-direction: row; align-items: center;">
-     <img src="docs/Introduction/pics/AUMWalletSizeAdjustmentFactor1.png" alt="1" style="max-width: 50%; margin-right: 10px;">
-     <img src="docs/Introduction/pics/AUMWalletSizeAdjustmentFactor2.png" alt="2" style="max-width: 50%;">
+     <img src="docs/Introduction/pics/WalletSizeAdjustment1.png" alt="1" style="max-width: 50%; margin-right: 10px;">
+     <img src="docs/Introduction/pics/WalletSizeAdjustment2.png" alt="2" style="max-width: 50%;">
+     <img src="docs/Introduction/pics/WalletSizeAdjustment3.png">
    </div>
    
-8. Scoring Cap vs AUM (Wallet Size)
-
-    Each mining strategy will have a daily scoring cap to prevent small wallet balances from having an outsized ranking impact from limited trade samples vs the entire subnet population.
-
-    $$\text {Scoring Cap = } \frac {\text{7 day Average Equity Balance}}{10,000}$$
-
-    eg. a 25k equity balance will have a scoring cap of 2.5
 
 ### ❌ Scoring Violations (i.e. Zero Score Conditions)
 
-  If a strategy violates any of the following rules, it will be penalized with a zero score against that day's positive return, while retaining the full impact of a negative drawdown.
+  We place heavy emphasis on preserving the authentic and genuine competitive spirit of our subnet miners, and will not tolerate duplicitous behaviour aimed towards gaming the system for rewards.  Our long-term mission is to provide institutional-grade trading data to power learning models for trading strategies and market signals, and the quality of outputs can only be as good as the quality of inputs.
+  
+Modus Operandi
 
-  Said in another way, miners who are subject to trading violations will have a maximum daily score of 0 with a downside score equal to its negative daily performance.
+- Each 'Exchange Master Account' - defined as the exchange-KYC'ed account between the user and the CEX - can only deploy one single subnet strategy
+- Miners who wish to deploy multiple strategies must maintain a minimum equity balance of 100,000 USDT in each of the individual strategies, in addition to fulfilling the aforementioned trading volume requirement (5,000 USDT over a rolling 7-day period) also for each individual strategy.
+
+## Basic Violations (Zero Score)
+If a strategy violates any of the following rules, it will be penalized with a zero score against that day's positive return, while retaining the full impact of a negative drawdown.
+
+Said in another way, miners who are subject to trading violations will have a maximum daily score of 0 with a downside score equal to its negative daily performance.
 
 1. Minimum Balance Requirement
    
@@ -214,11 +207,25 @@ $$\text{Daily \\% Return}=\begin{cases}\min(\text{Return\\%}, 2\cdot\text{Max Re
    Rule 5: We do not encourage trading options with a mark price below 4 basis points, as it may be deemed a wash trade.
 
 
-7. Note: Situations that may result in account suspension:
-
-   - When equity becomes 0
-   - When the API fails
-   - Cheating    
+7. MajorSuspension Categories
+  Subnet violators and perpetrators will be subject to suspension or bans with varying degrees of severity.  Suspensions are permanent and the perpetrating mining accounts will be removed from the competition.
+  
+  1. Cheaters, Strategy Duplicators, Wash Traders, and Other Illicit Activities
+    - Immediate suspension and removal of violated strategy from ranking participation.
+    - Permanent ban on the miner's Exchange Master Account and all associated strategies.
+  2. Loss of API Connection
+    - When a miner voluntarily severs their API connection to the connected CEX, or when the API connection is disrupted due to other technical complications
+    - Immediate suspension and removal of violated strategy from ranking participation.
+    - Additional 30-day lock-out on the miner's Exchange Master Account from creating a new strategy.
+  3. Minimal Equity Balance over 1 Week Period
+    - Defined as when a miner's equity balance runs below 1,000 USDT for 7 consecutive days.
+    - Immediate suspension and removal of violated strategy from ranking participation.
+  4. Zero Miner Equity Balance
+    - A miner's account will be immediately suspended and removed from participation if its equity balance touches zero at any point.
+  5. Strategies Removed Due to Bittensor Miner Limits
+    - Bittensor subnets are subject to a hard 192 miner UID limit.
+    - Additional miner signups will result in the lowest rank miners being removed from participation.
+    - Miners who have been expelled under this circumstance can immediately sign up and create a new strategy without a lock-out restriction, under the same Exchange Master Account and after paying the requisite TAO registration fee.   
    
 ### 🏅 Rankings and Rewards Distribution
 - Daily Rankings: Strategies are ranked based on their daily scores from the scoring formula, with higher scores leading to better sequential rankings.
@@ -227,23 +234,23 @@ $$\text{Daily \\% Return}=\begin{cases}\min(\text{Return\\%}, 2\cdot\text{Max Re
   - Rewards are distributed based on the strategy’s score relative to the **Top-50 performing strategies** on the day.
   - The formula for calculating rewards is:
     
-       $$\text{Strategy Reward = } \frac {\text{Strategy's Daily Score (Capped)}}{\text{Total Daily Score of Top-50 Strategies}} \cdot \text{Total Daily Reward Pool}$$ 
+       $$\text{Strategy Reward = } \frac {\text{Strategy's Daily Score }}{\text{Total Daily Score of Top-50 Strategies}} \cdot \text{Total Daily Reward Pool}$$ 
 
 ### Model Parameters
 
 | FIELD  | DESCRIPTION  <p> [x] = Variable |RATIONALE|
 | ------------- | ------------- | ------------- |
-|  Ranking_Index <p> (Strategy Score)|  $$\max{(\frac {\text{Weighted Daily \\% Returns}}{\text{Maximum Decayed Drawdown}} \cdot 10, \text{ Scoring Cap)}}$$|**Weighted Daily Returns / Maximum Drawdown Applied Against a Decay Factor (with a Scoring Cap)**<p>Conceptually similar to a Calmar ratio, with some adjustments down to daily return weights in order to favour more recent performance.|
-|  Weighed Daily Returns |  $$\frac{\text{CrossProduct(DayWeights * Daily \\% Returns)}}{\text{Sum(DayWeights)}}$$  |Time weighted daily returns|
+|  Ranking_Index <p> (Strategy Score)|  $${\frac {\text{Weighted Daily \\% Returns}}{\text{Maximum Decayed Drawdown}} \cdot 10} \cdot \text{Risk Factor}$$|**Weighted Daily Returns / Maximum Drawdown Applied Against a Decay Factor (with a Scoring Cap)**<p>Conceptually similar to a Calmar ratio, with some adjustments down to daily return weights in order to favour more recent performance.|
+|  Weighed Daily Returns |  $$\text{(Day1 \\% Return ⋅ Day1 Weight ⋅ Size Factor 1 + ... +}\\text{DayN \\% Return ⋅ DayN Weight ⋅ Size Factor N)}$$ |Time weighted daily returns|
 |DayWeight|$$\exp(-\lambda \cdot \text{Return Decay} \cdot \text {(Measurement Date - Inception Date}))$$|Day-weighting against a 14d / 20% half-life|
 |Trading Frequency (λ)|$$\text{\\{2,1,0\\}}$$<p>(Note: TBD, not yet implemented in current version)|Adjusts pace of return decay to trader frequency.<p>Faster decay = more weight on more recent performance|
 |Return Decay|$$\exp(\frac{\ln(20\\%)}{\text{14 Days}})$$|14-day half-life exponential decay to 20% on historical returns|
-|Daily % Returns|$$\frac {\text{Daily \\$ Return}}{\text{Avg(Balance\\_DayStart, Balance\\_DayStart + Net\\_Inflows)}}$$|Calculate daily % return adjusted (approx) by any daily Net_Inflows|
+|Daily % Returns|$$\text{Min(\\$ Return / Balance\\_DayStart, \\$ Return / Balance\\_DayEnd)}$$|Calculate daily % return adjusted (approx) by any daily Net_Inflows|
 |Maximum Decayed Drawdown|$$\text{Min(Today's \\% Drawdown, (}\frac{\text{Trough Index Value}}{\text{Peak Index Value}}-1) \cdot \text{Drawdown Decay, -1\\%)}$$|Iteratively search for the worst peak-to-trough in % decayed drawdown on a life-to-date basis, with a floor value of -1%|
-|Drawdown Decay|$$\exp(\frac{\ln(80\\%)}{\text{14 Days}})$$|14-day half-life exponential decay to 80% on LTD peak-to-trough % drawdowns|
+|Drawdown Decay|$$0.5^{\frac{\text{(Measurement date - Maximum Drawdown Date)}}{30}}$$|50% exponential decay over 30 days on LTD peak-to-trough % drawdowns|
 |Index Value|$$\text{Yesterday's Index Value} \cdot \text{(1 + Daily \\% Return)}$$|Day 1 Value = 100<p>Keeps track of normalized portfolio value growth|
-|Scoring Cap|$$\frac {\text{7 day Average Equity Balance}}{10,000}$$|Strategy Score is capped by the 7d average balance of the equity (wallet) balance to prevent small wallet and trade samples to have an outsized ranking impact vs the entire subnet population. |
-|AUM Adjustment Factor|$$\text{Strategy Score} \cdot \text {(1+} \ln( \sqrt{ \max{(1, \frac{\text{AUM}}{100,000}})}$$|Scaling factor to adjustment for rising difficulties of managing a larger AUM portfolio.|
+|Size Factor|$$\text {(1+} \ln( \max{(0.4, \frac{\text{Min(Balance\\_DayStart, Balance\\_DayEnd)}}{100,000})}$$|Scaling factor to adjustment for rising difficulties of managing a larger AUM portfolio.|
+|Risk Factor|![](docs/Introduction/pics/RiskFactor.png)|To penalize excessive portfolio risk taking.|
 |Measurement_Day|Current day|Current day|
 |Inception_Date|1st day for users to enter contest|Starts tracking|
 |Balance_DayStart|Wallet balance at start of day|Starting principal|
