@@ -161,7 +161,7 @@ class BaseNeuron(ABC):
 
     def should_set_weights(self) -> bool:
         def is_within_time_range(utc_now):
-            start_time = utc_now.replace(hour=8, minute=0, second=0, microsecond=0)
+            start_time = utc_now.replace(hour=7, minute=59, second=0, microsecond=0)
             end_time = utc_now.replace(hour=8, minute=16, second=0, microsecond=0)
             return start_time <= utc_now <= end_time
 
