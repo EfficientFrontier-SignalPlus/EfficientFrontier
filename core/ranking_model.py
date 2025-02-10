@@ -165,7 +165,7 @@ class ScoreModel(BaseModel):
             else:
                 mmr_score = s
 
-            return mmr_score * 10
+            return mmr_score * 10 * min(abs(self.measure_day_detail.day_pnl)/1000, 1)
 
     def get_result(self) -> ScoreResult:
         if not self.sorted_list and not self.is_sub_net_init:
