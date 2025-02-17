@@ -1,6 +1,6 @@
 websockets==14.1
 bittensor==9.0.0
-bittensor-cli==9.0.0
+bittensor-cli==9.0.1
 bittensor-wallet==3.0.3
 # bittensor-commit-reveal==0.1.0
 # bt-decode==0.4.0
