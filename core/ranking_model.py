@@ -57,7 +57,7 @@ class DayDetailDTO(BaseModel):
 
     def aum_multiplier(self) -> float:
         aum = min(self.equityStart, self.equityEnd)
-        return 1 + math.log(max(0.4, aum / 100_000))
+        return 1 + math.log(max(0.4, aum / 500_000))
 
     def day(self, inception_time: int) -> int:
         diff = self.endTime - inception_time
