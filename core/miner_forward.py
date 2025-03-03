@@ -5,6 +5,10 @@ from loguru import logger
 
 last_update_time = time.time()
 
+def get_last_update_time():
+    global last_update_time
+    return last_update_time
+
 async def forward(strategy_secret, synapse: EFProtocol) -> EFProtocol:
     logger.info("miner forward()")
     validator_uid = synapse.input.get('validator_uid', -1)

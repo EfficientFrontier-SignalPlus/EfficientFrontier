@@ -2,12 +2,13 @@ from _sdk.neurons.miner import Miner
 import time
 import os
 from loguru import logger
-from core.miner_forward import last_update_time
+from core.miner_forward import get_last_update_time
 
 if __name__ == "__main__":
     with Miner() as miner:
         while True:
             current_time = time.time()
+            last_update_time = get_last_update_time()
             time_since_update = current_time - last_update_time
             
             if time_since_update > 3600:  # 3600 seconds = 1 hour
