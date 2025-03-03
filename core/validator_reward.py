@@ -31,8 +31,6 @@ def reward(query: int, response: dict, miner_uid: int) -> float:
     - float: The reward value for the miner.
     """
     try:
-        if miner_uid==74:
-            print("This is a test")
         logger.info(f"In reward start, miner_uid:{miner_uid}, query val: {query}, miner's data': {response}")
         if response == {}:
             return 0

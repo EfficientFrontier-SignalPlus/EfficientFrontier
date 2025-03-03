@@ -79,6 +79,7 @@ class ScoreModel(BaseModel):
     inTopRank: bool
     minBalance: float
     quit: bool = False
+    protectScore:float
 
     sorted_list: Optional[List[DayDetailDTO]] = None
     worst7d_draw_down: Optional[float] = None
@@ -145,11 +146,12 @@ class ScoreModel(BaseModel):
         elif self.measure_day_detail is None or not self.inTopRank:
             return 0.0
         else:
+            inObserveTime=self.measure_day_detail.endTime - self.inceptionTime < 14 * ONE_DAY_MS
             if self.measure_day_detail.endTime != self.measureTime:
                 s = 0.0
             elif self.quit:
                 s = 0.0
-            elif self.measure_day_detail.endTime - self.inceptionTime < 14 * ONE_DAY_MS:
+            elif inObserveTime:
                 s = 0.0
             elif not self.measure_day_detail.qualified:
                 s = 0.0
@@ -164,8 +166,11 @@ class ScoreModel(BaseModel):
                 mmr_score = s * 0.8
             else:
                 mmr_score = s
-
-            return mmr_score * 10 * min(abs(self.measure_day_detail.day_pnl)/1000, 1)
+            finally_score = mmr_score * 10 * min(abs(self.measure_day_detail.day_pnl) / 1000, 1)
+            if finally_score <= 0 and not inObserveTime:
+                return self.protectScore
+            else:
+                return finally_score
 
     def get_result(self) -> ScoreResult:
         if not self.sorted_list and not self.is_sub_net_init:
