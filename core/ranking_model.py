@@ -79,7 +79,7 @@ class ScoreModel(BaseModel):
     inTopRank: bool
     minBalance: float
     quit: bool = False
-    protectScore:float
+    protectScore: float = 0.0001
 
     sorted_list: Optional[List[DayDetailDTO]] = None
     worst7d_draw_down: Optional[float] = None
