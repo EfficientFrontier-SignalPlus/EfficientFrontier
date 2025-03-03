@@ -67,6 +67,7 @@ def remove_timestamp_file():
 
 
 def get_current_commit_hash():
+    return "unknown"
     try:
         commit_hash = subprocess.check_output(["git", "rev-parse", "HEAD"]).decode("utf-8").strip()
         return commit_hash
