@@ -1,6 +1,7 @@
 # The MIT License (MIT)
 # Copyright © 2023 Yuma Rao
 # Copyright © 2023 <your name>
+import time
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 # documentation files (the “Software”), to deal in the Software without restriction, including without limitation
@@ -20,6 +21,18 @@ import json
 from loguru import logger
 from core.sp_api import ReportDataHandler
 from core.utils import verify256
+import bittensor as bt
+
+sub = bt.subtensor(network='finney')
+m = sub.metagraph(netuid=53)
+
+
+def get_coldkey_hotkey_by_uid(miner_uid):
+    return m.coldkeys[miner_uid], m.hotkeys[miner_uid]
+
+
+def is_measure_time_expired(measure_time):
+    return (time.time() - measure_time / 1000) / 3600 > 25
 
 
 def reward(query: int, response: dict, miner_uid: int) -> float:
@@ -45,6 +58,17 @@ def reward(query: int, response: dict, miner_uid: int) -> float:
         score_model = ReportDataHandler.create_score_model(data_json)
         if miner_uid != score_model.uid:
             logger.warning(f"Miner uid mismatch, miner_uid: {miner_uid}, score_model.uid: {score_model.uid}")
+            return 0
+
+        miner_coldkey, miner_hotkey = get_coldkey_hotkey_by_uid(miner_uid)
+        if miner_hotkey != score_model.hotkey or miner_coldkey != score_model.coldkey:
+            logger.warning(
+                f"Miner hotkey or coldkey mismatch, miner_uid: {miner_uid}, score_model.hotkey: {score_model.hotkey}, score_model.coldkey: {score_model.coldkey}")
+            return 0
+
+        if is_measure_time_expired(score_model.measureTime):
+            logger.warning(
+                f"Miner data is too old, miner_uid: {miner_uid}, score_model.measureTime: {score_model.measureTime}")
             return 0
 
         score = score_model.score

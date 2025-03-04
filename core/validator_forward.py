@@ -29,7 +29,7 @@ from loguru import logger
 
 async def forward(validator):
     num_uids = 256
-    batch_size = 5
+    batch_size = 20
     miner_uids = get_random_uids(validator, k=num_uids)
     logger.info(f"forward miner uids:\n{miner_uids}")
 

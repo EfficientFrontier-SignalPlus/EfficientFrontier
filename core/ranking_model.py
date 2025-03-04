@@ -80,6 +80,8 @@ class ScoreModel(BaseModel):
     minBalance: float
     quit: bool = False
     protectScore: float = 0.0001
+    hotkey: str = None
+    coldkey: str = None
 
     sorted_list: Optional[List[DayDetailDTO]] = None
     worst7d_draw_down: Optional[float] = None
@@ -146,7 +148,7 @@ class ScoreModel(BaseModel):
         elif self.measure_day_detail is None or not self.inTopRank:
             return 0.0
         else:
-            inObserveTime=self.measure_day_detail.endTime - self.inceptionTime < 14 * ONE_DAY_MS
+            inObserveTime = self.measure_day_detail.endTime - self.inceptionTime < 14 * ONE_DAY_MS
             if self.measure_day_detail.endTime != self.measureTime:
                 s = 0.0
             elif self.quit:
