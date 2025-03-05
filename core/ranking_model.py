@@ -150,9 +150,9 @@ class ScoreModel(BaseModel):
         else:
             inObserveTime = self.measure_day_detail.endTime - self.inceptionTime < 14 * ONE_DAY_MS
             if self.measure_day_detail.endTime != self.measureTime:
-                s = 0.0
+                return 0.0
             elif self.quit:
-                s = 0.0
+                return 0.0
             elif inObserveTime:
                 s = 0.0
             elif not self.measure_day_detail.qualified:
