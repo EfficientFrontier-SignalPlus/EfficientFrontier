@@ -2,6 +2,7 @@
 # Copyright © 2023 Yuma Rao
 # Copyright © 2023 <your name>
 import time
+import traceback
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 # documentation files (the “Software”), to deal in the Software without restriction, including without limitation
@@ -77,7 +78,7 @@ def reward(query: int, response: dict, miner_uid: int) -> float:
         logger.info(f"In reward end, miner_uid:{miner_uid}, score: {score}")
         return score
     except Exception as e:
-        logger.error(f"Error in rewards: {e}, miner data: {response}")
+        logger.error(f"Error in rewards: {e},{traceback.format_exc()}, miner data: {response}")
         return 0
 
 
