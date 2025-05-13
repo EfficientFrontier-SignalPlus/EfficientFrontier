@@ -24,10 +24,11 @@ from core.utils import verify256
 import bittensor as bt
 
 sub = bt.subtensor(network='finney')
-m = sub.metagraph(netuid=53)
+# m = sub.metagraph(netuid=53)
 
 
 def get_coldkey_hotkey_by_uid(miner_uid):
+    m = sub.metagraph(netuid=53)
     return m.coldkeys[miner_uid], m.hotkeys[miner_uid]
 
 
@@ -63,7 +64,8 @@ def reward(query: int, response: dict, miner_uid: int) -> float:
         miner_coldkey, miner_hotkey = get_coldkey_hotkey_by_uid(miner_uid)
         if miner_hotkey != score_model.hotkey or miner_coldkey != score_model.coldkey:
             logger.warning(
-                f"Miner hotkey or coldkey mismatch, miner_uid: {miner_uid}, score_model.hotkey: {score_model.hotkey}, score_model.coldkey: {score_model.coldkey}")
+                f"Miner hotkey or coldkey mismatch, miner_hotkey: {miner_hotkey}, miner_uid: {miner_uid}, "
+                f"score_model.hotkey: {score_model.hotkey}, score_model.coldkey: {score_model.coldkey}")
             return 0
 
         if is_measure_time_expired(score_model.measureTime):
