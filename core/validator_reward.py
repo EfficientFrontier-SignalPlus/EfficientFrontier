@@ -24,11 +24,8 @@ from core.sp_api import ReportDataHandler
 from core.utils import verify256
 import bittensor as bt
 
-sub = bt.subtensor(network='finney')
-# m = sub.metagraph(netuid=53)
-
-
 def get_coldkey_hotkey_by_uid(miner_uid):
+    sub = bt.subtensor(network='finney')
     m = sub.metagraph(netuid=53)
     return m.coldkeys[miner_uid], m.hotkeys[miner_uid]
 
