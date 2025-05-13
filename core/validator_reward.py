@@ -24,11 +24,26 @@ from core.sp_api import ReportDataHandler
 from core.utils import verify256
 import bittensor as bt
 
-def get_coldkey_hotkey_by_uid(miner_uid):
-    sub = bt.subtensor(network='finney')
-    m = sub.metagraph(netuid=53)
-    return m.coldkeys[miner_uid], m.hotkeys[miner_uid]
 
+class MetaGraphCache:
+    def __init__(self, netuid, ttl=600):
+        self.netuid = netuid
+        self.ttl = ttl
+        self._m = None
+        self._last_update = 0
+
+    def get_metagraph(self):
+        if time.time() - self._last_update > self.ttl or self._m is None:
+            sub = bt.subtensor(network='finney')
+            self._m = sub.metagraph(netuid=self.netuid)
+            self._last_update = time.time()
+        return self._m
+
+cache = MetaGraphCache(netuid=53)
+
+def get_coldkey_hotkey_by_uid(miner_uid):
+    m = cache.get_metagraph()
+    return m.coldkeys[miner_uid], m.hotkeys[miner_uid]
 
 def is_measure_time_expired(measure_time):
     return (time.time() - measure_time / 1000) / 3600 > 25
