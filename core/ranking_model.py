@@ -146,7 +146,7 @@ class ScoreModel(BaseModel):
             else:
                 return 1.0
         elif self.measure_day_detail is None or not self.inTopRank:
-            return 0.0
+            return self.protectScore
         else:
             inObserveTime = self.measure_day_detail.endTime - self.inceptionTime < 14 * ONE_DAY_MS
             if self.measure_day_detail.endTime != self.measureTime:
