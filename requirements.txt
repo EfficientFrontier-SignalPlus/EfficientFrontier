@@ -1,5 +1,5 @@
 websockets==14.1
-bittensor==9.4.0
+bittensor==9.10.1
 bittensor-cli==9.4.0
 bittensor-wallet==3.0.9
 # bittensor-commit-reveal==0.1.0
