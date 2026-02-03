@@ -76,9 +76,6 @@ def reward(query: int, response: dict, miner_uid: int) -> float:
         data_json = json.loads(data_str)
 
         score_model = ReportDataHandler.create_score_model(data_json)
-        if miner_uid != score_model.uid:
-            logger.warning(f"Miner uid mismatch, miner_uid: {miner_uid}, score_model.uid: {score_model.uid}")
-            return 0
 
         miner_coldkey, miner_hotkey = get_coldkey_hotkey_by_uid(miner_uid)
         if miner_hotkey != score_model.hotkey or miner_coldkey != score_model.coldkey:
