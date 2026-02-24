@@ -69,7 +69,6 @@ class DayDetailDTO(BaseModel):
 
 @dataclass
 class ScoreModel(BaseModel):
-    uid: int
     subNetCreateTime: int  # Must be at 16:00
     strategyId: str
     inceptionTime: int  # Must be at 16:00
